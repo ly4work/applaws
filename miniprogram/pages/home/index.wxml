@@ -14,7 +14,8 @@
     <view class="slogan-layer">
       <view class="s-l-box">
         <image class="slogan1" src="./../../images/home/slogan-1.png"></image>
-        <image class="slogan2" src="./../../images/home/slogan-2.png"></image>
+        <image wx:if="{{status === 1}}" class="slogan2" src="./../../images/home/slogan-2.png"></image>
+        <image wx:if="{{status === 2}}" class="slogan3" src="./../../images/home/slogan-1.png"></image>
       </view>
     </view>
 
@@ -32,7 +33,7 @@
   <!-- 用户操作区域 -->
   <view class="operation">
     <!-- status: 1 -->
-    <view class="sts1 btn-group" wx:if="{{status === 1}}">
+    <view class="sts1" wx:if="{{status === 1}}">
       <view class="btn1 btn-start">
         <image src="./../../images/home/buttons/start.png"></image>
       </view>
@@ -41,18 +42,72 @@
       </view>
     </view>
     <!-- status: 2 -->
-    <view class="sts1 btn-group" wx:if="{{status === 2}}">
-      <view class="btn1 btn-start">
-        <image src="./../../images/home/buttons/start.png"></image>
+    <view class="sts2" wx:if="{{status === 2}}">
+      <view class="tabs">
+        <view class="tab {{index === currentStatus2Tab ? 'active' : ''}}" wx:for="{{status2Tabs}}"
+          data-index="{{index}}" bindtap="handleCheckStatus2Tab" wx:key="index">
+          <view class="txt" data-index="{{index}}">{{item.title}}</view>
+        </view>
       </view>
-      <view class="btn1 btn-intro">
-        <image src="./../../images/home/buttons/intro.png"></image>
+      <view class="cabinet">
+        <image class="cab-bg" src="./../../images/home/cabinet.png"></image>
+        <view class="boxlist dress-list list1" wx-if="{{currentStatus2Tab === 0}}">
+          <view class="cell" wx:for="{{dressList}}" data-index="{{index}}" bindtap="handleCheckDressTab"
+            data-item="{{item}}" wx:key="id">
+            <image
+              src="./../../images/home/dress/{{(index + 1) + (currentDressTab.id === item.id ? '_active' : '')}}.png">
+            </image>
+          </view>
+        </view>
+
+        <view class="boxlist background-list list2" wx-if="{{currentStatus2Tab === 1}}">
+          <view class="cell" wx:for="{{backgroundList}}" data-index="{{index}}" bindtap="handleCheckBackgroundTab"
+            data-item="{{item}}" wx:key="id">
+            <image
+              src="./../../images/home/background/{{(index + 1) + (currentBackgroundTab.id === item.id ? '_active' : '')}}.png">
+            </image>
+          </view>
+        </view>
       </view>
+      <view class="btn-group">
+        <view class="btn2 btn-prev">
+          <image src="./../../images/home/buttons/prev.png"></image>
+        </view>
+        <view class="btn2 btn-next">
+          <image src="./../../images/home/buttons/next.png"></image>
+        </view>
+      </view>
+
+    </view>
+    <!-- status: 3 4 5 6-->
+    <view class="sts3" wx:if="{{status >= 3 && status <= 6}}">
+      <view class="cabinet">
+        <image class="cab-bg" src="./../../images/home/cabinet.png"></image>
+        <view class="record-box" wx:if="{{status === 3}}">
+          <view class="record-btn-group">
+            <image class="record-start" src="./../../images/home/buttons/start_record.png"></image>
+            <view class="txt">点击录制语音</view>
+          </view>
+        </view>
+        <view class="record-box" wx:if="{{status === 3}}">
+          <view class="record-btn-group">
+            <image class="record-start" src="./../../images/home/buttons/start_record.png"></image>
+            <view class="txt">点击录制语音</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="btn-group">
+        <view class="btn2 btn-prev">
+          <image src="./../../images/home/buttons/prev.png"></image>
+        </view>
+      </view>
+
     </view>
   </view>
 
   <!-- footer -->
-  <view class="footer">
+  <view class="footer" wx:if="{{status === 1}}">
     最终解释权归applaws所有
   </view>
 </view>

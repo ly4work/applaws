@@ -30,6 +30,7 @@
   from {
     transform: rotate(0)
   }
+
   to {
     transform: rotate(360deg)
   }
@@ -57,6 +58,12 @@
   margin-top: -20rpx;
 }
 
+.s-l-box .slogan3 {
+  width: 596rpx;
+  height: 154rpx;
+  margin-top: -20rpx;
+}
+
 .weather-layer {
   width: 100%;
   height: 100%;
@@ -69,31 +76,198 @@
 
 /* 操作区域 */
 .operation {
-  position: absolute;
+  position: fixed;
   z-index: 50;
   bottom: 58rpx;
   width: 100%;
 }
 
+/* status 1 */
 .sts1 {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.btn1 {
+.sts1 .btn1 {
   width: 438rpx;
   height: 154rpx;
 }
 
-.btn1 image {
+.sts1 .btn1 image {
   width: 100%;
   height: 100%;
 }
 
+/* status 2 */
+.sts2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sts2 .tabs {
+  display: flex;
+  align-items: center;
+  width: 678rpx;
+  padding-left: 80rpx;
+}
+
+.tabs .tab {
+  width: 192rpx;
+  height: 74rpx;
+  background: #FFEBC0;
+  box-shadow: 0px 4rpx 4rpx 0px rgba(255, 238, 238, 0.5);
+  border-radius: 32rpx 32rpx 0px 0px;
+  font-size: 30rpx;
+  font-family: SourceHanSansCN-Bold, SourceHanSansCN;
+  font-weight: bold;
+  color: #8D5B3B;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  margin-right: 18rpx;
+  transition: all 0.1s ease-in-out;
+}
+
+.tab .txt {
+  margin: 0 auto;
+  transition: all 0.1s ease-in-out;
+}
+
+.tab.active {
+  background: #FFD580;
+}
+
+.tab.active .txt {
+  color: #EA3013;
+}
+
+.sts2 .cabinet {
+  width: 678rpx;
+  height: 218rpx;
+  position: relative;
+}
+
+.cabinet .cab-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+.cabinet .boxlist {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  padding: 10rpx 40rpx 0;
+}
+
+.cell image {
+  width: 100%;
+  height: 100%;
+}
+
+.dress-list .cell {
+  width: 118rpx;
+  height: 118rpx;
+}
+
+.background-list .cell {
+  width: 140rpx;
+  height: 140rpx;
+}
+
+.sts2 .btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.sts2 .btn2 {
+  width: 350rpx;
+  height: 155rpx;
+}
+
+.sts2 .btn2 image {
+  width: 100%;
+  height: 100%;
+
+}
+
+/* status 3 */
+.sts3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sts3 .cabinet {
+  width: 678rpx;
+  height: 248rpx;
+  position: relative;
+}
+
+.cabinet .cab-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+.record-box {
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.record-btn-group {
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 40rpx 0 30rpx;
+}
+
+.record-btn-group .record-start {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.record-btn-group .txt {
+  font-size: 28rpx;
+  font-family: SourceHanSansCN-Medium, SourceHanSansCN;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+
+.sts3 .btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.sts3 .btn2 {
+  width: 350rpx;
+  height: 155rpx;
+}
+
+.sts3 .btn2 image {
+  width: 100%;
+  height: 100%;
+
+}
+
 .footer {
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 20rpx;
   text-align: center;
   font-size: 24rpx;

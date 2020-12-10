@@ -5,9 +5,64 @@ Page({
    * 页面的初始数据
    */
   data: {
-    status: 2
+    status: 3,
+    currentStatus2Tab: 0,
+    status2Tabs: [{
+        key: 'dress',
+        title: '服饰装饰'
+      },
+      {
+        key: 'background',
+        title: '背景'
+      }
+    ],
+    currentDressTab: {id: '1'},
+    dressList: [{
+        id: '1'
+      },
+      {
+        id: '2'
+      },
+      {
+        id: '3'
+      },
+      {
+        id: '4'
+      },
+      {
+        id: '5'
+      }
+    ],
+    currentBackgroundTab: {id: '1'},
+    backgroundList: [{
+        id: '1'
+      },
+      {
+        id: '2'
+      }
+    ]
   },
-
+  // 切换 status2换装衣柜tab
+  handleCheckStatus2Tab: function (e) {
+    console.log(e.currentTarget.dataset.index)
+    this.setData({
+      currentStatus2Tab: e.currentTarget.dataset.index
+    })
+  },
+  //  切换服装 dress tab
+  handleCheckDressTab: function (e) {
+    console.log(e.currentTarget.dataset.index)
+    this.setData({
+      currentDressTab: e.currentTarget.dataset.item
+    })
+  },
+  //  切换背景 background tab
+  handleCheckBackgroundTab: function (e) {
+    console.log(e.currentTarget.dataset.index)
+    this.setData({
+      currentBackgroundTab: e.currentTarget.dataset.item
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
