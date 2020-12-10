@@ -1,0 +1,35 @@
+<!--miniprogram/pages/home/index.wxml-->
+<view>
+  <!-- status:0 | 7 加载动画区域 -->
+  <view class="loading">
+
+  </view>
+  <!-- 图层区域 -->
+  <view class="layer">
+
+    <!-- 天气图层 -->
+    <view class="weather-layer">
+      <image src="./../../images/home/weather/1.png" mode="scaleToFill"></image>
+    </view>
+  </view>
+
+  <!-- 用户操作区域 -->
+  <view class="operation ope-{{status}}">
+    <!-- status: 7 -->
+    <view class="sts7">
+      <view class="btn-group">
+        <view class="btn7 btn-prev">
+          <image src="./../../images/home/buttons/prev.png"></image>
+        </view>
+        <view class="btn7 btn-next">
+          <image src="./../../images/home/buttons/my_gift.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- footer -->
+  <view class="footer" wx:if="{{status === 1}}">
+    最终解释权归applaws所有
+  </view>
+</view>

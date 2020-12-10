@@ -31,7 +31,7 @@
   </view>
 
   <!-- 用户操作区域 -->
-  <view class="operation">
+  <view class="operation ope-{{status}}">
     <!-- status: 1 -->
     <view class="sts1" wx:if="{{status === 1}}">
       <view class="btn1 btn-start">
@@ -79,8 +79,8 @@
       </view>
 
     </view>
-    <!-- status: 3 4 5 6-->
-    <view class="sts3" wx:if="{{status >= 3 && status <= 6}}">
+    <!-- status: 3 4 5-->
+    <view class="sts345" wx:if="{{status >= 3 && status <= 5}}">
       <view class="cabinet">
         <image class="cab-bg" src="./../../images/home/cabinet.png"></image>
         <view class="record-box" wx:if="{{status === 3}}">
@@ -89,10 +89,39 @@
             <view class="txt">点击录制语音</view>
           </view>
         </view>
-        <view class="record-box" wx:if="{{status === 3}}">
+        <view class="record-box" wx:if="{{status === 4}}">
+          <view class="animate-box">
+            <view class="animation left" bindtap="click">
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+            </view>
+            <view class="animation reverse right" bindtap="click">
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+            </view>
+          </view>
+
           <view class="record-btn-group">
-            <image class="record-start" src="./../../images/home/buttons/start_record.png"></image>
-            <view class="txt">点击录制语音</view>
+            <image class="record-start" src="./../../images/home/buttons/recording.png"></image>
+            <view class="txt">再次点击停止录音</view>
+
+          </view>
+
+        </view>
+        <view class="record-box" wx:if="{{status === 5}}">
+          <view class="record-btn-group flex">
+            <view class="cell">
+              <image class="record-start" src="./../../images/home/buttons/try_listen.png"></image>
+              <view class="txt">试听</view>
+            </view>
+            <view class="cell">
+              <image class="record-start" src="./../../images/home/buttons/re_record.png"></image>
+              <view class="txt">重录</view>
+            </view>
           </view>
         </view>
       </view>
@@ -100,6 +129,47 @@
       <view class="btn-group">
         <view class="btn2 btn-prev">
           <image src="./../../images/home/buttons/prev.png"></image>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- status: 7 -->
+    <view class="sts7" wx:if="{{status === 7}}">
+      <view class="radio-bar">
+        <view class="radio-icon">
+          <image src="./../../images/home/audio.png"></image>
+        </view>
+        <view class="radio-txt">
+          点击听听我的圣诞祝福
+        </view>
+      </view>
+      <view class="btn-group">
+        <view class="btn7 btn-prev">
+          <image src="./../../images/home/buttons/re_create.png"></image>
+        </view>
+        <view class="btn7 btn-next">
+          <image src="./../../images/home/buttons/bless.png"></image>
+        </view>
+        <view class="btn7 btn-next">
+          <image src="./../../images/home/buttons/lucky_wheel.png"></image>
+        </view>
+      </view>
+    </view>
+
+    <!-- status: 8 -->
+    <view class="sts8" wx:if="{{status === 8}}">
+      <view class="radio-bar">
+        <view class="radio-icon">
+          <image src="./../../images/home/audio.png"></image>
+        </view>
+        <view class="radio-txt">
+          点击听听我的圣诞祝福
+        </view>
+      </view>
+      <view class="btn-group">
+        <view class="btn8 btn-prev">
+          <image src="./../../images/home/buttons/iwant.png"></image>
         </view>
       </view>
 

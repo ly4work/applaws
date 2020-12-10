@@ -294,7 +294,7 @@ image {
 }
 
 .btn-group .btn7 {
-  width: 242rpx;
+  width: 320rpx;
   height: 145rpx;
 }
 
@@ -329,11 +329,13 @@ image {
   font-weight: 500;
   color: #FFFFFF;
 }
-.sts8 .btn-group  {
+
+.sts8 .btn-group {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
+
 .sts8 .btn-group .btn8 {
   width: 438rpx;
   height: 155rpx;
