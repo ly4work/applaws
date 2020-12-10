@@ -1,0 +1,58 @@
+<!--miniprogram/pages/home/index.wxml-->
+<view>
+  <!-- status:0 | 7 加载动画区域 -->
+  <view class="loading">
+
+  </view>
+  <!-- 图层区域 -->
+  <view class="layer">
+    <!-- 背景音乐 -->
+    <view class="music-layer">
+      <image class="icon-music rotate" src="./../../images/home/music-icon.png"></image>
+    </view>
+    <!-- slogan图层 -->
+    <view class="slogan-layer">
+      <view class="s-l-box">
+        <image class="slogan1" src="./../../images/home/slogan-1.png"></image>
+        <image class="slogan2" src="./../../images/home/slogan-2.png"></image>
+      </view>
+    </view>
+
+    <!-- 天气图层 -->
+    <view class="weather-layer">
+      <image src="./../../images/home/weather/1.png" mode="scaleToFill"></image>
+    </view>
+    <!-- 主体背景图层 -->
+
+    <!-- 服装图层 -->
+
+    <!-- 人脸图层 -->
+  </view>
+
+  <!-- 用户操作区域 -->
+  <view class="operation">
+    <!-- status: 1 -->
+    <view class="sts1 btn-group" wx:if="{{status === 1}}">
+      <view class="btn1 btn-start">
+        <image src="./../../images/home/buttons/start.png"></image>
+      </view>
+      <view class="btn1 btn-intro">
+        <image src="./../../images/home/buttons/intro.png"></image>
+      </view>
+    </view>
+    <!-- status: 2 -->
+    <view class="sts1 btn-group" wx:if="{{status === 2}}">
+      <view class="btn1 btn-start">
+        <image src="./../../images/home/buttons/start.png"></image>
+      </view>
+      <view class="btn1 btn-intro">
+        <image src="./../../images/home/buttons/intro.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- footer -->
+  <view class="footer">
+    最终解释权归applaws所有
+  </view>
+</view>
