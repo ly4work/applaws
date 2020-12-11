@@ -4,6 +4,28 @@ image {
   height: 100%;
 }
 
+/* 规则btn */
+
+.rules-layer {
+  width: 162rpx;
+  height: 92rpx;
+  background: #FEBF02;
+  border-radius: 46px;
+  border-radius: 46rpx 0rpx 0rpx 46rpx;
+  position: fixed;
+  top: 86rpx;
+  right: 0rpx;
+  z-index: 22;
+  font-size: 28rpx;
+  font-family: SourceHanSansCN-Bold, SourceHanSansCN;
+  font-weight: bold;
+  color: #843F0D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10rpx;
+}
+
 /* 图层区域 */
 .layer {
   position: fixed;
@@ -11,6 +33,46 @@ image {
   height: 100vh;
   z-index: 10;
   top: 0;
+}
+
+/* 转盘图层 */
+.wheel-layer {
+  width: 100%;
+}
+
+.wheel {
+  position: fixed;
+  top: 66rpx;
+  width: 700rpx;
+  height: 882rpx;
+  z-index: 12;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+.lucky {}
+
+.lucky .base-pointer {
+  width: 262rpx;
+  height: 302rpx;
+  position: fixed;
+  z-index: 34;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 400rpx;
+}
+
+.lucky .pointer {
+  width: 262rpx;
+  height: 302rpx;
+  position: fixed;
+  z-index: 33;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 400rpx;
 }
 
 .music-layer {
@@ -82,7 +144,7 @@ image {
 .operation {
   position: fixed;
   z-index: 50;
-  bottom: 12rpx;
+  bottom: 91rpx;
   width: 100%;
 }
 

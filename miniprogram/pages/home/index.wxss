@@ -4,6 +4,62 @@ image {
   height: 100%;
 }
 
+.loading-layer {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  top: 0;
+  background: #C0342E;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 560rpx;
+  box-sizing: border-box;
+}
+
+.design {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+
+.design .logo {
+  width: 220rpx;
+  height: 98rpx;
+}
+
+.design .bell {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.loading-bar {
+  width: 538rpx;
+  height: 28rpx;
+  background: #1D592D;
+  border-radius: 14rpx;
+  overflow: hidden;
+  margin-bottom: 50rpx;
+}
+
+.loading-bar .progress {
+  height: 100%;
+  background: #F3B639;
+  border-radius: 14rpx;
+  width: 50%;
+}
+
+.loading-txt {
+  font-size: 40rpx;
+  font-family: SourceHanSansCN-Medium, SourceHanSansCN;
+  font-weight: 500;
+  color: #F3B639;
+}
+
 /* 图层区域 */
 .layer {
   position: fixed;
@@ -19,6 +75,7 @@ image {
   height: 60rpx;
   right: 30rpx;
   top: 30rpx;
+  z-index: 300;
 }
 
 .music-layer image {
@@ -329,11 +386,13 @@ image {
   font-weight: 500;
   color: #FFFFFF;
 }
-.sts8 .btn-group  {
+
+.sts8 .btn-group {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
+
 .sts8 .btn-group .btn8 {
   width: 438rpx;
   height: 155rpx;

@@ -1,17 +1,32 @@
 <!--miniprogram/pages/home/index.wxml-->
 <view>
-  <!-- status:0 | 7 加载动画区域 -->
-  <view class="loading">
-
+  <!-- status:0 | 7 加载动画区域 顶层layer-->
+  <view class="loading-layer" wx:if="{{status === 0}}">
+    <view class="design">
+      <view class="logo" >
+      <image src="./../../images/home/slogan-1.png"></image>
+      </view>
+      <view class="bell" >
+      <image src="./../../images/home/bell.png"></image></view>
+    </view>
+    <view class="loading-bar">
+      <view class="progress"></view>
+    </view>
+    <view class="loading-txt">
+      正在加载...
+    </view>
   </view>
+
+  <!-- 背景音乐layer 顶层layer -->
+  <view class="music-layer">
+    <image class="icon-music rotate" src="./../../images/home/music-icon.png"></image>
+  </view>
+
   <!-- 图层区域 -->
   <view class="layer">
-    <!-- 背景音乐 -->
-    <view class="music-layer">
-      <image class="icon-music rotate" src="./../../images/home/music-icon.png"></image>
-    </view>
+
     <!-- slogan图层 -->
-    <view class="slogan-layer">
+    <view class="slogan-layer" bindtap="handleChooseFace">
       <view class="s-l-box">
         <image class="slogan1" src="./../../images/home/slogan-1.png"></image>
         <image wx:if="{{status === 1}}" class="slogan2" src="./../../images/home/slogan-2.png"></image>

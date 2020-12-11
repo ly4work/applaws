@@ -1,9 +1,6 @@
 <!--miniprogram/pages/home/index.wxml-->
 <view>
-  <!-- status:0 | 7 加载动画区域 -->
-  <view class="loading">
 
-  </view>
   <!-- 图层区域 -->
   <view class="layer">
 
@@ -13,6 +10,24 @@
     </view>
   </view>
 
+  <!-- 规则button -->
+  <view class="rules-layer">
+    活动规则
+  </view>
+  <!-- 转盘区域 -->
+  <view class="wheel-layer">
+    <view class="wheel">
+      <image src="./../../images/luckywheel/wheel.png" mode="scaleToFill"></image>
+    </view>
+    <view class="lucky">
+      <view class="base-pointer">
+        <image src="./../../images/luckywheel/lucky-btn.png" mode="scaleToFill"></image>
+      </view>
+      <view class="pointer">
+        <image src="./../../images/luckywheel/pointer.png" mode="scaleToFill"></image>
+      </view>
+    </view>
+  </view>
   <!-- 用户操作区域 -->
   <view class="operation ope-{{status}}">
     <!-- status: 7 -->

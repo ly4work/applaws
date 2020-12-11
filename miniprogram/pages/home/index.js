@@ -1,4 +1,6 @@
 // miniprogram/pages/home/index.js
+import Utils from './../../utils/index'
+
 Page({
 
   /**
@@ -14,7 +16,7 @@ Page({
     // 6 - Packaged 贺卡打包中loading
     // 7 - Complete 贺卡制作结束
     // 8 - Received 打开分享的页面
-    status: 8,
+    status: 1,
     currentStatus2Tab: 0,
     status2Tabs: [{
         key: 'dress',
@@ -70,6 +72,30 @@ Page({
     console.log(e.currentTarget.dataset.index)
     this.setData({
       currentBackgroundTab: e.currentTarget.dataset.item
+    })
+  },
+  // 图像识别服务-车辆识别
+  identifyFace(base64Img) {
+    const self = this
+    Utils.BaiduAISdk.identifyFace({
+      image: base64Img,
+      success: function (data) {
+        console.log(data)
+      }
+    })
+  },
+  handleChooseFace: function (e) {
+    const self = this
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      success: function (res) {
+        const base64Img = Utils.img2Base64({
+          imgPath: res
+        })
+        self.identifyFace(base64Img)
+      },
+      fail: function (err) { }
     })
   },
   /**
