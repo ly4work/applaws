@@ -20,10 +20,10 @@
       <image src="./../../images/luckywheel/wheel.png" mode="scaleToFill"></image>
     </view>
     <view class="lucky">
-      <view class="base-pointer">
+      <view class="base-pointer" bindtap="start">
         <image src="./../../images/luckywheel/lucky-btn.png" mode="scaleToFill"></image>
       </view>
-      <view class="pointer">
+      <view class="pointer" animation="{{animationData}}">
         <image src="./../../images/luckywheel/pointer.png" mode="scaleToFill"></image>
       </view>
     </view>
@@ -33,7 +33,7 @@
     <!-- status: 7 -->
     <view class="sts7">
       <view class="btn-group">
-        <view class="btn7 btn-prev">
+        <view class="btn7 btn-prev" bindtap="handleBackPage">
           <image src="./../../images/home/buttons/prev.png"></image>
         </view>
         <view class="btn7 btn-next">
@@ -42,7 +42,17 @@
       </view>
     </view>
   </view>
-
+  <!-- modal activity活动介绍 -->
+  <view class="modal modal-reward" wx:if="{{modalStatusMap.reward}}">
+    <view class="modal-trans">
+      <view class="close" bindtap="handleCheckRewardModal">
+        <image src="./../../images/home/buttons/close.png"></image>
+      </view>
+      <view class="content">
+        <image src="./../../images/home/modal/rweta.png"></image>
+      </view>
+    </view>
+  </view>
   <!-- footer -->
   <view class="footer" wx:if="{{status === 1}}">
     最终解释权归applaws所有

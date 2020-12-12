@@ -50,7 +50,8 @@ image {
   height: 100%;
   background: #F3B639;
   border-radius: 14rpx;
-  width: 50%;
+  /* width: 50%; */
+  transition: all 0.3s ease-in-out;
 }
 
 .loading-txt {
@@ -99,7 +100,7 @@ image {
 
 .slogan-layer {
   position: absolute;
-  z-index: 1;
+  z-index: 5;
   width: 100%;
 }
 
@@ -113,6 +114,12 @@ image {
   height: 98rpx;
 }
 
+.s-l-box .slogan1.sm {
+  width: 159rpx;
+  height: 70rpx;
+  margin-left: -40rpx;
+}
+
 .s-l-box .slogan2 {
   width: 596rpx;
   height: 154rpx;
@@ -120,19 +127,277 @@ image {
 }
 
 .s-l-box .slogan3 {
-  width: 596rpx;
-  height: 154rpx;
+  width: 304rpx;
+  height: 81rpx;
+  display: block;
+  margin: 0 auto;
   margin-top: -20rpx;
 }
 
 .weather-layer {
   width: 100%;
   height: 100%;
+  background: #F0F8FF;
+  position: relative;
+  z-index: 4;
 }
 
-.weather-layer image {
+.weather-layer .wt {
   width: 100%;
-  height: 100%;
+  height: 1106rpx;
+  z-index: 1;
+  position: absolute;
+}
+
+.weather-layer .land {
+  width: 100%;
+  height: 875rpx;
+  position: absolute;
+  top: 275rpx;
+  z-index: 2;
+}
+
+.ps-layers {
+  position: absolute;
+  z-index: 40;
+  width: 524rpx;
+  height: 596rpx;
+  top: 200rpx;
+  /* background: yellow; */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.background-layer {
+  width: 524rpx;
+  height: 596rpx;
+  position: absolute;
+}
+
+.background-layer.background-1 {
+  z-index: 4;
+}
+
+.background-layer.background-2 {
+  z-index: 1;
+}
+
+.background-layer.background-2 image {
+  position: absolute;
+  bottom: 0;
+  width: 469rpx;
+  height: 459rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.dress-layer {
+  position: absolute;
+  z-index: 3;
+  width: 524rpx;
+  height: 596rpx;
+}
+
+.dress-layer .hat {
+  width: 166.8rpx;
+  height: 92.4rpx;
+  position: absolute;
+  top: 41rpx;
+  left: 52rpx;
+  right: 0;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+.hat.hat-2 {
+  width: calc(151rpx * 1);
+  height: calc(61rpx * 1);
+  top: 80rpx;
+  left: 20rpx;
+}
+
+.hat.hat-3 {
+  width: calc(89rpx * 1.2);
+  height: calc(75rpx * 1.2);
+  left: 2rpx;
+  top: 20rpx;
+}
+
+.hat.hat-4 {
+  width: calc(122rpx * 1);
+  height: calc(84rpx * 1);
+  top: 31rpx;
+  left: 6rpx;
+}
+
+.hat.hat-5 {
+  width: calc(199rpx * 1);
+  height: calc(124rpx * 1);
+  top: 19rpx;
+  left: 15rpx;
+}
+
+.dress-layer .body {
+  width: 176.4rpx;
+  height: 224.4rpx;
+  position: absolute;
+  top: 241rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 3;
+}
+
+.body.body-2 {
+  width: calc(269rpx * 1);
+  height: calc(187rpx * 1);
+  left: 15rpx;
+  top: 276rpx;
+}
+
+.body.body-3 {
+  width: calc(166rpx * 1.2);
+  height: calc(180rpx * 1.2);
+  top: 263rpx;
+}
+
+.body.body-4 {
+  width: calc(236rpx * 1.2);
+  height: calc(186rpx * 1.2);
+  top: 249rpx;
+  left: 62rpx;
+}
+
+.body.body-5 {
+  width: calc(293rpx * 1);
+  height: calc(305rpx * 1);
+  top: 168rpx;
+  left: 85rpx;
+}
+
+.dress-layer .footer {
+  width: 393rpx;
+  height: 248rpx;
+  position: absolute;
+  top: 115px;
+  left: 11px;
+  right: 0;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.footer.footer-2 {
+  width: 415rpx;
+  height: 206rpx;
+  top: 127px;
+  left: 0px;
+}
+
+.footer.footer-3 {
+  width: 363rpx;
+  height: 207rpx;
+  top: 133px;
+}
+
+.footer.footer-4 {
+  width: 395rpx;
+  height: 356rpx;
+  top: 51px;
+  left: 45px;
+}
+
+.footer.footer-5 {
+  width: 417rpx;
+  height: 212rpx;
+  top: 125px;
+  left: 1px;
+}
+
+.decoration {
+  position: absolute;
+  z-index: 4;
+}
+
+.decoration.decoration-2 {
+  width: 447rpx;
+  height: 403rpx;
+  right: -35rpx;
+  top: 20rpx;
+}
+
+.decoration.decoration-4 {
+  width: 149rpx;
+  height: 269rpx;
+  top: 59rpx;
+  left: 34rpx;
+}
+
+.face-layer {
+  position: absolute;
+  z-index: 2;
+  width: 288rpx;
+  height: 288rpx;
+  top: 16rpx;
+  left: -8rpx;
+  right: 0;
+  margin: 0 auto;
+}
+
+.face-dress-2 {
+  top: 46rpx;
+  left: 0;
+}
+
+.face-dress-3 {
+  top: 28rpx;
+  left: -9rpx;
+}
+
+.face-dress-5 {
+  top: 58rpx;
+  left: 0rpx;
+}
+
+/* 猫图层 */
+.cat-layers {
+  position: fixed;
+  width: 100%;
+  height: 176rpx;
+  z-index: 45;
+  top: 597rpx;
+  left: 10rpx;
+}
+
+.cat-layers .cat_buou {
+  position: absolute;
+  width: 209rpx;
+  height: 141rpx;
+  right: 86rpx;
+  top: 58rpx;
+  z-index: 2;
+}
+
+.cat-layers .cat_yingduan {
+  position: absolute;
+  width: 170rpx;
+  height: 176rpx;
+  left: 99rpx;
+  top: 31rpx;
+  z-index: 2;
+
+}
+
+.cat-layers .caidai {
+  position: absolute;
+  width: 524rpx;
+  height: 110rpx;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50rpx
 }
 
 /* 操作区域 */
@@ -325,10 +590,12 @@ image {
   width: 350rpx;
   height: 155rpx;
 }
+
 .btn2.btn5 {
   width: 438rpx;
   height: 155rpx;
 }
+
 .sts345 .btn2 image {
   width: 100%;
   height: 100%;
@@ -357,28 +624,37 @@ image {
 .btn-group .btn7 {
   width: 242rpx;
   height: 145rpx;
+  position: relative;
+}
+
+.btn-group .btn7 .weixin {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  opacity: 0;
+  z-index: 3;
 }
 
 .btn-group .btn7 image {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .sts7 .radio-bar,
 .sts8 .radio-bar {
-  width: 600rpx;
-  height: 87rpx;
-  background: #69D64E;
-  box-shadow: 0px 10px 0px 0px rgba(43, 219, 249, 0.21), 0px 6px 6px 0px rgba(255, 238, 238, 0.5);
-  border-radius: 43rpx;
+  width: 622rpx;
+  height: 182rpx;
   padding-left: 37rpx;
-  margin: 0 auto 20rpx;
+  margin: 0 auto -20rpx;
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
 
-.radio-bar .radio-icon {
+/* .radio-bar .radio-icon {
   width: 57rpx;
   height: 58rpx;
   margin-right: 11rpx;
@@ -389,7 +665,7 @@ image {
   font-family: SourceHanSansCN-Medium, SourceHanSansCN;
   font-weight: 500;
   color: #FFFFFF;
-}
+} */
 
 .sts8 .btn-group {
   display: flex;
@@ -404,7 +680,7 @@ image {
 
 
 
-.footer {
+.copyright {
   width: 100%;
   position: fixed;
   bottom: 20rpx;
@@ -539,6 +815,7 @@ image {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
 .modal .close {
   width: 79rpx;
   height: 79rpx;
@@ -559,4 +836,16 @@ image {
   top: 50%;
   transform: translateY(-50%);
   z-index: 10000;
+}
+
+.modal-share {
+  top: 0;
+}
+
+.modal-share .share-logo {
+  width: 416rpx;
+  height: 203rpx;
+  position: absolute;
+  top: 36rpx;
+  right: 36rpx;
 }

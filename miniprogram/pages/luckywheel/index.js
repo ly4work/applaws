@@ -1,82 +1,176 @@
 // miniprogram/pages/home/index.js
+//  初始化数据库
+const db = wx.cloud.database({
+  env: 'test-7gniicn9893dca9d'
+})
+
+function format() {
+  var d = new Date();
+  var curr_date = d.getDate();
+  var curr_month = d.getMonth() + 1;
+  var curr_year = d.getFullYear();
+  String(curr_month).length < 2 ? (curr_month = "0" + curr_month) : curr_month;
+  String(curr_date).length < 2 ? (curr_date = "0" + curr_date) : curr_date;
+  var yyyyMMdd = curr_year + "" + curr_month + "" + curr_date;
+  return yyyyMMdd;
+}
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    // 0 - Loading 页面资源加载中
-    // 1 - Init 初始状态
-    // 2 - Style 选择服饰、背景
-    // 3 - StartRecord 开始录音
-    // 4 - Recording 录音中
-    // 5 - StopRecoding 录音结束
-    // 6 - Packaged 贺卡打包中loading
-    // 7 - Complete 贺卡制作结束
-    // 8 - Received 打开分享的页面
-    status: 8,
-    currentStatus2Tab: 0,
-    status2Tabs: [{
-        key: 'dress',
-        title: '服饰装饰'
-      },
-      {
-        key: 'background',
-        title: '背景'
-      }
-    ],
-    currentDressTab: {id: '1'},
-    dressList: [{
-        id: '1'
-      },
-      {
-        id: '2'
-      },
-      {
-        id: '3'
-      },
-      {
-        id: '4'
-      },
-      {
-        id: '5'
-      }
-    ],
-    currentBackgroundTab: {id: '1'},
-    backgroundList: [{
-        id: '1'
-      },
-      {
-        id: '2'
-      }
-    ]
+    animationData: {}, //初始动画数据
+    Prize: [45, 90, 135], //45度安慰奖，90度二等奖，135度一等奖
+    flag: false,
+    gifts: [],
+    openId: '',
+    modalStatusMap: {
+      reward: true
+    }
   },
-  // 切换 status2换装衣柜tab
-  handleCheckStatus2Tab: function (e) {
-    console.log(e.currentTarget.dataset.index)
+  start: async function () {
+    //  先查询用户，当前这一天，是否抽过奖
+    const userInfoRes = await db.collection('user_list').where({
+      openId: this.data.openId
+    }).get()
+    const userInfo = userInfoRes.data[0]
+    console.log('userInfo', userInfo)
+
+    // 查询到说明已经抽过奖了
+    const key = `timestampTag${format()}`
+    console.log('key:', key)
+    if (Boolean(userInfo[key]) >= 1) {
+      wx.showToast({
+        title: '今日已经抽过奖啦，明日再来吧！',
+        icon: 'none'
+      })
+    } else {
+      const luckyGift = this.handleRandom()
+      const time = new Date().toLocaleDateString()
+      //  将奖品插入user_list， 和prize_list
+      console.log(luckyGift)
+      //  先插入prize_list，返回prizeId
+      const res = await db.collection('prize_list').add({
+        data: {
+          openId: this.data.openId,
+          giftId: luckyGift._id,
+          time,
+          type: luckyGift.type,
+          name: luckyGift.name,
+          command: luckyGift.command || '',
+          isCheckIn: false,
+          userName: '',
+          userPhone: '',
+          userAddress: '',
+          userPetName: ''
+        }
+      })
+      console.log('插入prize_list => ', res)
+
+      //  更新userinfo
+      const newPrize = {
+        prizeId: res._id,
+        giftId: luckyGift._id,
+        time,
+        type: luckyGift.type,
+        name: luckyGift.name,
+        command: luckyGift.command || '',
+        isCheckIn: false,
+        userName: '',
+        userPhone: '',
+        userAddress: '',
+        userPetName: ''
+      }
+      const userUpdateRes = await db.collection('user_list').doc(userInfo._id).update({
+        data: {
+          prizeList: db.command.push([newPrize]),
+          [key]: 1
+        }
+      })
+      console.log(userUpdateRes)
+
+      //  动画转盘
+      let animation = wx.createAnimation({ //创建动画实例
+        duration: 6000,
+        timingFunction: 'ease-in-out'
+      })
+      animation.rotate(360 * 3 + this.data.Prize[2]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
+      this.setData({
+        animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
+      })
+
+      // 弹出中奖框
+    }
+
+  },
+  handleBackPage: function () {
+    wx.navigateBack()
+  },
+  handleGetLuck: function () {
+
+  },
+   //  切换中奖modal
+   handleCheckRewardModal: function () {
+    // console.log(this.data.modalStatusMap.activity)
     this.setData({
-      currentStatus2Tab: e.currentTarget.dataset.index
+      modalStatusMap: {
+        ...this.data.modalStatusMap,
+        reward: !this.data.modalStatusMap.reward
+      }
     })
   },
-  //  切换服装 dress tab
-  handleCheckDressTab: function (e) {
-    console.log(e.currentTarget.dataset.index)
-    this.setData({
-      currentDressTab: e.currentTarget.dataset.item
-    })
+  closeWin() {
+    this.animation.rotate(0).step()
+    this.animationData = this.animation.export()
+    this.deg = 0
+    // this.$apply()
   },
-  //  切换背景 background tab
-  handleCheckBackgroundTab: function (e) {
-    console.log(e.currentTarget.dataset.index)
-    this.setData({
-      currentBackgroundTab: e.currentTarget.dataset.item
-    })
+  // 中奖函数
+  handleRandom: function () {
+    const max = 100
+    const min = 1
+    const num = parseInt(Math.random() * (max - min + 1) + min)
+    let probability = 0
+    //  一等奖
+    if (num >= 1 && num <= 2) {
+      probability = 2
+    } else if (num > 2 && num <= 90) {
+      //  三等奖
+      probability = 88
+    } else {
+      //  二等奖
+      probability = 10
+    }
+    return this.data.gifts.find((item) => item.probability === probability)
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
+    // const animation = wx.createAnimation({
+    //   duration: 2000,
+    //   timingFunction: 'ease-in-out'
+    // })
+    // this.animation = animation
+    const res = await db.collection('gift_list').get()
+    this.setData({
+      gifts: res.data
+    })
 
+    wx.cloud.callFunction({
+      name: 'login',
+      success: res => {
+        console.log('res:=>', res)
+        this.setData({
+          openId: res.result.openid
+        })
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
   },
 
   /**

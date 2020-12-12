@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/home/index",
     "pages/luckywheel/index",
+    "pages/home/index",
     "pages/index/index"
   ],
   "window": {

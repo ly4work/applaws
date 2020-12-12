@@ -37,15 +37,31 @@ function randomId(n = 1, m) {
 
 //  初始化数据库
 const db = wx.cloud.database({
-  env: 'test'
+  env: 'test-7gniicn9893dca9d'
 })
 
+
+const cacheImageList = [
+  './../../images/home/bell.png',
+  './../../images/home/slogan-1.png',
+  './../../images/home/slogan-2.png',
+  './../../images/home/slogan-3.png',
+  './../../images/home/weather/w_2.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-1.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-2.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-3.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-4.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-5.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-6.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-7.png',
+]
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    //  -1 空页面
     // 0 - Loading 页面资源加载中
     // 1 - Init 初始状态
     // 2 - Style 选择服饰、背景
@@ -55,11 +71,13 @@ Page({
     // 6 - Packaged 贺卡打包中loading
     // 7 - Complete 贺卡制作结束
     // 8 - Received 打开分享的页面
-    status: 1,
+    cacheImageList,
+    status: 7,
     openId: '',
     gender: 'male',
     glass: 'no-glass',
-    faceId: '',
+    faceId: 'no-glass-female-5',
+    cardId: '',
     cloudStorageId: '7465-test-7gniicn9893dca9d-1304476931',
     bgMusicPlayStatus: true,
     currentStatus2Tab: 0,
@@ -101,14 +119,38 @@ Page({
         id: '2'
       }
     ],
+    currentWeatherId: '1',
     modalStatusMap: {
       activity: false,
+      share: false
     },
     openRecordingdis: "block", //显示录机图标
     shutRecordingdis: "none", //隐藏停止图标
     recordingTimeqwe: 0, //录音计时
     setInter: "", //录音名称
-    soundUrl: ""
+    soundUrl: "",
+    preLoadCount: 0,
+    preLoadProgressPercent: 0,
+  },
+  handleLoadImage: function (e) {
+    console.log(e.currentTarget.dataset)
+    this.setData({
+      preLoadCount: this.data.preLoadCount + 1,
+      preLoadProgressPercent: (this.data.preLoadCount + 1) / this.data.cacheImageList.length * 100
+    }, () => {
+      console.log(this.data.preLoadProgressPercent)
+      //  加载完，设置 init status 1
+      if (this.data.preLoadCount === this.data.cacheImageList.length) {
+        this.setData({
+          preLoadProgressPercent: 100,
+        })
+        setTimeout(() => {
+          this.setData({
+            status: 1
+          })
+        }, 300);
+      }
+    })
   },
   // 切换背景音乐状态
   handleCheckBgMusicStatus: function () {
@@ -137,6 +179,7 @@ Page({
     const that = this
     this.handleChooseFace(() => {
       that.handleNext()
+      innerAudioContext.play()
     })
   },
   //  下一步
@@ -169,8 +212,16 @@ Page({
   //  切换服装 dress tab
   handleCheckDressTab: function (e) {
     console.log(e.currentTarget.dataset.index)
+    let randomWeatherId = Number(this.data.currentWeatherId)
+    if (randomWeatherId === 3) {
+      randomWeatherId = 1
+    } else {
+      randomWeatherId += 1
+    }
+    console.log(randomWeatherId, 'randomWeatherId')
     this.setData({
-      currentDressTab: e.currentTarget.dataset.item
+      currentDressTab: e.currentTarget.dataset.item,
+      currentWeatherId: String(randomWeatherId)
     })
   },
   //  切换背景 background tab
@@ -296,10 +347,6 @@ Page({
   },
   //录音播放
   recordingAndPlaying: function (eve) {
-    // console.log(eve)
-    // const tempsound = eve.currentTarget.dataset.soundid
-    // tempsound = "https://6e65-newdj-d79af2-1257790921.tcb.qcloud.la/sounds" + this.midstr(tempsound)
-    // console.log(tempsound)
     wx.playBackgroundAudio({
       //播放地址
       dataUrl: this.data.soundUrl
@@ -325,8 +372,26 @@ Page({
     return ministr
   },
   //  提交用户装扮数据
-  handleSubmit: function () {
+  handleSubmit: async function () {
     const self = this
+    await self.setData({
+      preLoadProgressPercent: 0
+    })
+    let timer = setInterval(() => {
+      if (self.data.preLoadProgressPercent >= 100) {
+        clearInterval(timer)
+        // self.setData({
+        //   preLoadProgressPercent: 0
+        // })
+      } else {
+        self.setData({
+          preLoadProgressPercent: self.data.preLoadProgressPercent + 10
+        })
+      }
+    }, 500);
+    await self.setData({
+      status: 6
+    })
     let params = {
       backgroundId: this.data.currentBackgroundTab.id,
       dressId: this.data.currentDressTab.id,
@@ -338,16 +403,60 @@ Page({
     }
     console.log(params)
     // 插入表 card_list user_list
-    db.collection('card_list').add({
+    const addCardRes = await db.collection('card_list').add({
       data: params,
-      success: (res) => {
-        console.log(res)
-      }
     })
-    db.collection('user_list').where({
+    console.log(addCardRes)
+    this.setData({
+      cardId: addCardRes._id
+    })
+
+    const queryUserRes = await db.collection('user_list').where({
       openId: self.data.openId
-    }).get().then(res => {
-      console.log(res.data)
+    }).get()
+
+    // 查询为空则插入一条数据，否则更新
+    if (queryUserRes.data.length < 1) {
+      await db.collection('user_list').add({
+        data: {
+          cardId: addCardRes._id,
+          openId: self.data.openId,
+          prizeList: []
+        }
+      })
+    } else {
+      let userId = queryUserRes.data[0]._id
+      await db.collection('user_list').doc(userId).update({
+        data: {
+          cardId: addCardRes._id
+        }
+      })
+    }
+    setTimeout(() => {
+      self.setData({
+        preLoadProgressPercent: 0
+      })
+      self.setData({
+        status: 7
+      })
+    }, 5500);
+  },
+  toPageLuckyWheel: function () {
+    wx.navigateTo({
+      url: '/pages/luckywheel/index',
+      events: {
+        // // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+        // acceptDataFromOpenedPage: function(data) {
+        //   console.log(data)
+        // },
+        // someEvent: function(data) {
+        //   console.log(data)
+        // }
+      },
+      success: function (res) {
+        // // 通过eventChannel向被打开页面传送数据
+        // res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+      }
     })
   },
   /**
@@ -355,6 +464,7 @@ Page({
    */
   onLoad: function (options) {
     const that = this
+
     wx.cloud.callFunction({
       name: 'login',
       success: res => {
@@ -368,7 +478,12 @@ Page({
       }
     })
   },
-
+  handleShare: function () {
+    wx.updateShareMenu({
+      withShareTicket: true,
+      success() {}
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
