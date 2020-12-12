@@ -42,7 +42,7 @@
       </view>
     </view>
   </view>
-  <!-- modal activity活动介绍 -->
+  <!-- modal 中奖 -->
   <view class="modal modal-reward" wx:if="{{modalStatusMap.reward}}">
     <view class="modal-trans">
       <view class="close" bindtap="handleCheckRewardModal">
@@ -50,9 +50,58 @@
       </view>
       <view class="content">
         <image src="./../../images/home/modal/rweta.png"></image>
+        <view class="prize-info">
+          <image src="./../../images/home/modal/type1.png"></image>
+        </view>
+        <view class="prize-button command" wx:if="{{currentPrize.type === 2}}" bindtap='copyText'
+          data-text="{{currentPrize.command}}">
+          <image src="./../../images/home/buttons/copy_command.png"></image>
+        </view>
+        <view class="prize-copy-tips" wx:if="{{currentPrize.type === 2}}">
+          复制优惠券去淘宝打开
+        </view>
+        <view class="prize-button exchange" wx:if="{{currentPrize.type === 1}}">
+          <image src="./../../images/home/buttons/to_exchange.png"></image>
+        </view>
       </view>
     </view>
   </view>
+
+  <!-- modal 兑换奖品 -->
+  <view class="modal modal-exchange" wx:if="{{modalStatusMap.exchange}}">
+    <view class="modal-trans">
+      <view class="content">
+        <view class="exchange-close" bindtap="handleCheckExchangeModal">
+          <image src="./../../images/home/buttons/close.png"></image>
+        </view>
+        <image src="./../../images/home/modal/exchange.png"></image>
+        <form class="form" bindsubmit="formSubmit">
+          <view class="cell">
+            <view class="label">姓名</view>
+            <input class="ipt" name="userName"></input>
+          </view>
+          <view class="cell">
+            <view class="label">电话</view>
+            <input class="ipt" name="userPhone"></input>
+          </view>
+          <view class="cell">
+            <view class="label">地址</view>
+            <input class="ipt" name="userAddress"></input>
+          </view>
+          <view class="cell">
+            <view class="label">宠物姓名</view>
+            <input class="ipt" name="userPetName"></input>
+          </view>
+          <view class="prize-button exchange submit">
+            <button formType="submit"></button>
+            <image src="./../../images/home/buttons/submit.png"></image>
+          </view>
+        </form>
+
+      </view>
+    </view>
+  </view>
+
   <!-- footer -->
   <view class="footer" wx:if="{{status === 1}}">
     最终解释权归applaws所有

@@ -248,9 +248,6 @@
       </view>
       <view class="content">
         <image src="./../../images/home/modal/modal-activity.png"></image>
-        <view class="prize-info">
-          <image  src="./../../images/home/modal/type1.png"></image>
-        </view>
       </view>
     </view>
   </view>

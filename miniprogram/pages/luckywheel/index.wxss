@@ -227,4 +227,120 @@ image {
   top: 50%;
   transform: translateY(-50%);
   z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 300rpx;
+  box-sizing: border-box;
+}
+
+.content>image {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.modal-reward .prize-info {
+  width: 318rpx;
+  height: 274rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.prize-button.command {
+  width: 438rpx;
+  height: 155rpx;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 19rpx;
+}
+
+.prize-copy-tips {
+  font-size: 28rpx;
+  font-family: SourceHanSansCN-Bold, SourceHanSansCN;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.prize-button.exchange {
+  width: 438rpx;
+  height: 155rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.modal.modal-exchange .content {
+  width: 670rpx;
+  height: 969rpx;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* padding-top: 300rpx; */
+  box-sizing: border-box;
+}
+
+.modal.modal-exchange .content .submit {
+  /* bottom: 55rpx;
+  position: absolute; */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.modal.modal-exchange .content button {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  top: 0;
+}
+.modal.modal-exchange .content image {
+  position: relative;
+  z-index: 1;
+}
+
+.modal.modal-exchange .exchange-close {
+  width: 79rpx;
+  height: 79rpx;
+  position: absolute;
+  bottom: -100rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.form {
+  position: absolute;
+  top: 40px;
+  z-index: 10;
+}
+
+.form .label {
+
+  font-size: 28rpx;
+  font-family: SourceHanSansCN-Medium, SourceHanSansCN;
+  font-weight: 500;
+  color: #FF4D29;
+  margin-bottom: 11rpx;
+}
+
+.form .ipt {
+  width: 560rpx;
+  height: 90rpx;
+  background: #FFFFFF;
+  border-radius: 10rpx;
+  margin-bottom: 30rpx;
 }

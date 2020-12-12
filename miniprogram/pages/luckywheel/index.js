@@ -27,7 +27,12 @@ Page({
     gifts: [],
     openId: '',
     modalStatusMap: {
-      reward: true
+      reward: false,
+      exchange: true
+    },
+    currentPrize: {
+      type: 1,
+      command: 'testX))*@#@#*)!*@)#@'
     }
   },
   start: async function () {
@@ -98,6 +103,11 @@ Page({
       })
       animation.rotate(360 * 3 + this.data.Prize[2]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
       this.setData({
+        currentPrize: newPrize,
+        modalStatusMap: {
+          ...this.data.modalStatusMap,
+          reward: true
+        },
         animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
       })
 
@@ -108,11 +118,23 @@ Page({
   handleBackPage: function () {
     wx.navigateBack()
   },
-  handleGetLuck: function () {
-
+  copyText: function (e) {
+    console.log(e)
+    wx.setClipboardData({
+      data: e.currentTarget.dataset.text,
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            wx.showToast({
+              title: '口令复制成功'
+            })
+          }
+        })
+      }
+    })
   },
-   //  切换中奖modal
-   handleCheckRewardModal: function () {
+  //  切换中奖modal
+  handleCheckRewardModal: function () {
     // console.log(this.data.modalStatusMap.activity)
     this.setData({
       modalStatusMap: {
@@ -120,6 +142,19 @@ Page({
         reward: !this.data.modalStatusMap.reward
       }
     })
+  },
+  handleCheckExchangeModal: function () {
+    // console.log(this.data.modalStatusMap.activity)
+    this.setData({
+      modalStatusMap: {
+        ...this.data.modalStatusMap,
+        exchange: !this.data.modalStatusMap.exchange
+      }
+    })
+  },
+  formSubmit(e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+
   },
   closeWin() {
     this.animation.rotate(0).step()
@@ -149,11 +184,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    // const animation = wx.createAnimation({
-    //   duration: 2000,
-    //   timingFunction: 'ease-in-out'
-    // })
-    // this.animation = animation
     const res = await db.collection('gift_list').get()
     this.setData({
       gifts: res.data
