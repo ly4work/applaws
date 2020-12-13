@@ -260,9 +260,9 @@ Page({
     const num = parseInt(Math.random() * (max - min + 1) + min)
     let probability = 0
     //  一等奖 虚拟2
-    if (num >= 1 && num <= 1) {
+    if (num >= 1 && num <= 2) {
       probability = 2
-    } else if (num > 2 && num <= 3) {
+    } else if (num > 2 && num <= 89) {
       //  三等奖 虚拟1
       probability = 88
     } else {
@@ -276,9 +276,9 @@ Page({
    */
   onLoad: async function (options) {
     console.log('options::', options)
-    wx.showToast({
-      title: JSON.stringify(options),
-    })
+    // wx.showToast({
+    //   title: JSON.stringify(options),
+    // })
     const res = await db.collection('gift_list').get()
     this.setData({
       gifts: res.data

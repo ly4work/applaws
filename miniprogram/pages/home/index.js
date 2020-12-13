@@ -8,7 +8,7 @@ const recorderManager = wx.getRecorderManager()
 const backgroundAudioManager = wx.getBackgroundAudioManager()
 //添加音效
 const innerAudioContext = wx.createInnerAudioContext()
-// innerAudioContext.autoplay = true // 是否自动开始播放，默认为 false
+innerAudioContext.autoplay = true // 是否自动开始播放，默认为 false
 innerAudioContext.loop = true // 是否循环播放，默认为 false
 wx.setInnerAudioOption({ // ios在静音状态下能够正常播放音效
   obeyMuteSwitch: false, // 是否遵循系统静音开关，默认为 true。当此参数为 false 时，即使用户打开了静音开关，也能继续发出声音。
@@ -23,10 +23,10 @@ wx.setInnerAudioOption({ // ios在静音状态下能够正常播放音效
 })
 // wx.playBackgroundAudio({
 //   dataUrl: 'https://7465-test-7gniicn9893dca9d-1304476931.tcb.qcloud.la/sounds/1607697380956-79354.mp3',
-//   title: '',
-//   coverImgUrl: ''
+//   // title: '',
+//   // coverImgUrl: ''
 // })
-innerAudioContext.src = 'https://7465-test-7gniicn9893dca9d-1304476931.tcb.qcloud.la/sounds/1607697380956-79354.mp3'; // 音频资源的地址
+innerAudioContext.src = 'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/sounds/1607854027482-25169.mp3'; // 音频资源的地址
 innerAudioContext.onPlay(() => { // 监听音频播放事件
   console.log('开始播放')
 })
@@ -48,17 +48,84 @@ const db = wx.cloud.database({
 
 const cacheImageList = [
   './../../images/home/bell.png',
+  './../../images/home/audio.png',
+  './../../images/home/cabinet.png',
+  './../../images/home/caidai.png',
+  './../../images/home/cat_buou.png',
+  './../../images/home/cat_yingduan.png',
+  './../../images/home/complete.png',
+  './../../images/home/music-icon.png',
+  './../../images/home/cabinet.png',
   './../../images/home/slogan-1.png',
   './../../images/home/slogan-2.png',
   './../../images/home/slogan-3.png',
+  './../../images/home/snow-foreground.png',
+  './../../images/home/snow-large.png',
+  './../../images/home/snow-tiny.png',
+  './../../images/home/weather/w_1.png',
   './../../images/home/weather/w_2.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-1.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-2.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-3.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-4.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-5.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-6.png',
-  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/no-glass-male-7.png',
+  './../../images/home/weather/w_3.png',
+  './../../images/home/weather/snow.png',
+  './../../images/home/background/1.png',
+  './../../images/home/background/2.png',
+  './../../images/home/background/1_active.png',
+  './../../images/home/background/1_box.png',
+  './../../images/home/background/2_box.png',
+  './../../images/home/background/2_active.png',
+  './../../images/home/buttons/bless.png',
+  './../../images/home/buttons/close.png',
+  './../../images/home/buttons/copy_command.png',
+  './../../images/home/buttons/intro.png',
+  './../../images/home/buttons/iwant.png',
+  './../../images/home/buttons/lucky_wheel.png',
+  './../../images/home/buttons/my_gift.png',
+  './../../images/home/buttons/next.png',
+  './../../images/home/buttons/prev.png',
+  './../../images/home/buttons/re_create.png',
+  './../../images/home/buttons/re_record.png',
+  './../../images/home/buttons/recording.png',
+  './../../images/home/buttons/start_record.png',
+  './../../images/home/buttons/start.png',
+  './../../images/home/buttons/submit.png',
+  './../../images/home/buttons/to_exchange.png',
+  './../../images/home/buttons/try_listen.png',
+  './../../images/home/dress/1.png',
+  './../../images/home/dress/1_hat.png',
+  './../../images/home/dress/1_footer.png',
+  './../../images/home/dress/1_body.png',
+  './../../images/home/dress/1_active.png',
+  './../../images/home/dress/2.png',
+  './../../images/home/dress/2_hat.png',
+  './../../images/home/dress/2_footer.png',
+  './../../images/home/dress/2_body.png',
+  './../../images/home/dress/2_active.png',
+  './../../images/home/dress/2_decoration.png',
+  './../../images/home/dress/3.png',
+  './../../images/home/dress/3_hat.png',
+  './../../images/home/dress/3_footer.png',
+  './../../images/home/dress/3_body.png',
+  './../../images/home/dress/3_active.png',
+  './../../images/home/dress/4.png',
+  './../../images/home/dress/4_hat.png',
+  './../../images/home/dress/4_footer.png',
+  './../../images/home/dress/4_body.png',
+  './../../images/home/dress/4_active.png',
+  './../../images/home/dress/4_decoration.png',
+  './../../images/home/dress/5.png',
+  './../../images/home/dress/5_hat.png',
+  './../../images/home/dress/5_footer.png',
+  './../../images/home/dress/5_body.png',
+  './../../images/home/dress/5_active.png',
+  './../../images/home/modal/modal-activity.png',
+  './../../images/home/modal/rweta.png',
+  './../../images/home/modal/exchange.png',
+  './../../images/home/modal/type1.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/loading.gif',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/人物头.gif',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/布偶.gif',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/水晶球装饰灯.gif',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/蓝猫.gif',
 ]
 Page({
 
@@ -77,16 +144,17 @@ Page({
     // 7 - Complete 贺卡制作结束
     // 8 - Received 打开分享的页面
     cacheImageList,
+    animationData: {},
     status: 0,
     openId: '',
     gender: 'male',
     glass: 'no-glass',
-    faceId: 'no-glass-female-5',
+    faceId: 'no-glass-female-7',
     cardId: '',
     cloudStorageId: '7465-test-7gniicn9893dca9d-1304476931',
     bgMusicPlayStatus: true,
     currentStatus2Tab: 0,
-    fromShare: true,
+    fromShare: false,
     shareInfo: {
 
     },
@@ -147,15 +215,26 @@ Page({
       preLoadCount: this.data.preLoadCount + 1,
       preLoadProgressPercent: (this.data.preLoadCount + 1) / this.data.cacheImageList.length * 100
     }, () => {
-      console.log(this.data.preLoadProgressPercent)
+      // console.log(this.data.preLoadProgressPercent)
       //  加载完，设置 init status 1
       if (this.data.preLoadCount === this.data.cacheImageList.length) {
         this.setData({
           preLoadProgressPercent: 100,
         })
+        // setTimeout(() => {
+        //  不是来源于分享则显示status 1
+        console.log('fromShare', this.data.fromShare)
+
+        //  进度层淡出
+        let animation = wx.createAnimation({ //创建动画实例
+          duration: 800,
+          timingFunction: 'ease'
+        })
+        animation.opacity(0).step()
+        this.setData({
+          animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
+        })
         setTimeout(() => {
-          //  不是来源于分享则显示status 1
-          console.log('fromShare', this.data.fromShare)
           if (!this.data.fromShare) {
             this.setData({
               status: 1
@@ -165,7 +244,10 @@ Page({
               status: 8
             })
           }
-        }, 300);
+        }, 500);
+
+
+        // }, 300);
       }
     })
   },
@@ -196,7 +278,11 @@ Page({
     const that = this
     this.handleChooseFace(() => {
       that.handleNext()
+      // this.handleCheckBgMusicStatus()
       innerAudioContext.play()
+      this.setData({
+        bgMusicPlayStatus: true
+      })
     })
   },
   //  下一步
@@ -292,6 +378,11 @@ Page({
   //开始录音
   openRecording: function () {
     var that = this;
+    // this.handleCheckBgMusicStatus()
+    innerAudioContext.pause()
+    this.setData({
+      bgMusicPlayStatus: false
+    })
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -364,9 +455,18 @@ Page({
   },
   //录音播放
   recordingAndPlaying: function (eve) {
+    // innerAudioContext.pause()
+    // this.handleCheckBgMusicStatus()
     wx.playBackgroundAudio({
       //播放地址
       dataUrl: this.data.soundUrl
+    })
+  },
+  //  分享者听录音
+  listenToShareRecord: function () {
+    wx.playBackgroundAudio({
+      //播放地址
+      dataUrl: this.data.shareInfo.recordId
     })
   },
   //生成从minNum到maxNum的随机数
@@ -390,6 +490,14 @@ Page({
   },
   //  提交用户装扮数据
   handleSubmit: async function () {
+    let animation = wx.createAnimation({ //创建动画实例
+      duration: 0,
+      timingFunction: 'none'
+    })
+    animation.opacity(1).step()
+    this.setData({
+      animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
+    })
     const self = this
     await self.setData({
       preLoadProgressPercent: 0
@@ -416,7 +524,7 @@ Page({
       gender: this.data.gender,
       openId: this.data.openId,
       recordId: this.data.soundUrl,
-      weatherId: "1"
+      weatherId: this.data.currentWeatherId
     }
 
     console.log(params)
@@ -433,6 +541,7 @@ Page({
       openId: self.data.openId
     }).get()
 
+    console.log('insert user openI => ', self.data.openId)
     // 查询为空则插入一条数据，否则更新
     if (queryUserRes.data.length < 1) {
       await db.collection('user_list').add({
@@ -453,6 +562,14 @@ Page({
     setTimeout(() => {
       self.setData({
         preLoadProgressPercent: 0
+      })
+      let animation = wx.createAnimation({ //创建动画实例
+        duration: 500,
+        timingFunction: 'ease'
+      })
+      animation.opacity(0).step()
+      this.setData({
+        animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
       })
       self.setData({
         status: 7
@@ -483,25 +600,25 @@ Page({
    */
   onLoad: async function (options) {
     console.log('options::', options)
-    wx.showToast({
-      title: JSON.stringify(options),
-    })
+    // wx.showModal({
+    //   cancelColor: 'cancelColor',
+    //   content: JSON.stringify(options),
+    // })
     if (options.cardId) {
       this.setData({
         status: 8,
         fromShare: true
       })
       //  查询card_list表的数据
-      const res = db.collection('card_list').doc(options.cardId).get()
-      console.log(res)
+      const res = await db.collection('card_list').doc(options.cardId).get()
+      console.log('card:::', res.data)
+      this.setData({
+        shareInfo: {
+          ...res.data
+        }
+      })
     }
-    const res = await db.collection('card_list').doc('8ac0e22b5fd5b958001302411ee8eeb1').get()
-    console.log('card:::', res.data)
-    this.setData({
-      shareInfo: {
-        ...res.data
-      }
-    })
+
     wx.cloud.callFunction({
       name: 'login',
       success: res => {
@@ -561,10 +678,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (res) {
-    const cardId = this.data.cardId
+    // const cardId = this.data.cardId
     if (res.from === 'button') {
       // 来自页面内转发按钮
-      console.log('from button', `?cardId=${this.data.cardId || 123}`)
+      // console.log('from button', `?cardId=${this.data.cardId || 123}`)
       return {
         title: '快来听听我的祝福吧',
         path: `/pages/home/index?cardId=${this.data.cardId || 123}`,

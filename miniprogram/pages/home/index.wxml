@@ -1,17 +1,17 @@
 <!--miniprogram/pages/home/index.wxml-->
 <view>
-  <view class="loading-files" wx:if="{{status === 0}}">
+  <view class="loading-files" wx:show="{{status === 0}}">
     <image wx:for="{{cacheImageList}}" src="{{item}}" data-index="{{index}}" data-item="{{item}}" wx:key="index"
       bindload="handleLoadImage">
     </image>
   </view>
   <!-- status:0 | 7 加载动画区域 顶层layer-->
-  <view class="loading-layer" wx:if="{{status === 0 || status === 6}}">
+  <view class="loading-layer" wx:if="{{status === 0 || status === 6}}" animation="{{animationData}}">
     <view class="design">
       <view class="logo">
         <image src="./../../images/home/slogan-1.png"></image>
       </view>
-      <view class="bell">
+      <view class="bell zy-bell ">
         <image src="./../../images/home/bell.png"></image>
       </view>
     </view>
@@ -29,9 +29,8 @@
     </image>
   </view>
 
-  <!-- 分享打开 图层区域 -->
+  <!-- 分享打开 主图层区域 -->
   <view class="layer" wx-if="{{status === 8 && shareInfo._id}}">
-
     <!-- slogan图层 -->
     <view class="slogan-layer">
       <view class="s-l-box">
@@ -80,15 +79,86 @@
       <view class="cat_yingduan">
         <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
       </view>
-      <view class="caidai">
+      <view class="caidai" wx-if="{{shareInfo.backgroundId !== '1'}}">
         <image class="land" src="./../../images/home/caidai.png" mode="scaleToFill"></image>
       </view>
     </view>
   </view>
 
-  <!-- 图层区域 -->
-  <view class="layer" wx-if="{{status !== 8}}">
+  <!-- 应用首页 主图层区域 -->
+  <view class="layer layer-1" wx-if="{{status === 1}}">
+    <!-- slogan图层 -->
+    <view class="slogan-layer">
+      <view class="s-l-box">
+        <image class="slogan1" src="./../../images/home/slogan-1.png"></image>
+        <image class="slogan2" src="./../../images/home/slogan-2.png"></image>
+      </view>
+    </view>
 
+    <!-- 天气weather图层 -->
+    <view class="weather-layer">
+      <image class="wt" src="./../../images/home/weather/w_1.png" mode="scaleToFill"></image>
+      <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-container">
+        <view class="snow foreground">
+          <image src="./../../images/home/snow-foreground.png"></image>
+        </view>
+        <view class="snow foreground layered"></view>
+        <view class="snow middleground">
+          <image src="./../../images/home/snow-tiny.png"></image>
+        </view>
+        <view class="snow middleground layered"></view>
+        <view class="snow background">
+          <image src="./../../images/home/snow-large.png"></image>
+        </view>
+        <view class="snow background layered"></view>
+      </view>
+    </view>
+
+    <!-- 贴图层 -->
+    <view class="ps-layers ps-layers-1">
+      <!-- 主体background背景图层 -->
+      <view class="background-layer background-1">
+        <image class="wt" src="./../../images/home/background/1_box.png" mode="scaleToFill">
+        </image>
+      </view>
+      <image class="decoration decoration-2 static-decor"
+          src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/水晶球装饰灯.gif"
+          mode="scaleToFill">
+        </image>
+      <!-- 服装dress图层 -->
+      <view class="dress-layer">
+        <!-- <image class="hat hat-2" src="./../../images/home/dress/2_hat.png"
+          mode="scaleToFill"></image> -->
+        <image class="body body-2" src="./../../images/home/dress/2_body.png" mode="scaleToFill"></image>
+        <image class="footer footer-2" src="./../../images/home/dress/2_footer.png" mode="scaleToFill"></image>
+
+      </view>
+      <!-- 人脸face图层 -->
+      <view class="face-layer static-face">
+        <image src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/人物头.gif"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+
+    <!-- 布偶猫 -->
+    <view class="cat-layers cat-layers-1">
+      <view class="cat_buou static-buou">
+        <image class="land" src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/布偶.gif"
+          mode="scaleToFill"></image>
+      </view>
+      <view class="cat_yingduan static-yingduan">
+        <image class="land" src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/蓝猫.gif"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 制作图层 主图层区域 -->
+  <view class="layer" wx-if="{{status !== 8 && status !== 1}}">
     <!-- slogan图层 -->
     <view class="slogan-layer">
       <view class="s-l-box">
@@ -139,7 +209,7 @@
       <view class="cat_yingduan">
         <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
       </view>
-      <view class="caidai">
+      <view class="caidai" wx-if="{{currentBackgroundTab.id !== '1'}}">
         <image class="land" src="./../../images/home/caidai.png" mode="scaleToFill"></image>
       </view>
     </view>
@@ -275,11 +345,11 @@
 
     <!-- status: 8 -->
     <view class="sts8" wx:if="{{status === 8}}">
-      <view class="radio-bar" bindtap="recordingAndPlaying">
+      <view class="radio-bar" bindtap="listenToShareRecord">
         <image src="./../../images/home/complete.png"></image>
       </view>
       <view class="btn-group">
-        <view class="btn8 btn-prev">
+        <view class="btn8 btn-prev" bindtap="handleSetStep" data-step="1">
           <image src="./../../images/home/buttons/iwant.png"></image>
         </view>
       </view>

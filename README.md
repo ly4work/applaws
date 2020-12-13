@@ -10,3 +10,24 @@
 
 - [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
 
+
+### 批量删表
+
+```
+// db.collection('card_list')
+//   .where({
+//     openId: db.command.exists(true)
+//   })
+//   .remove()
+// db.collection('prize_list')
+//   .where({
+//     openId: db.command.exists(true)
+//   })
+//   .remove()
+
+db.collection('user_list')
+  .where({
+    openId: db.command.exists(true)
+  })
+  .remove()
+```

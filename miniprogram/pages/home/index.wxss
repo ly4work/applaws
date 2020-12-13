@@ -33,8 +33,10 @@ image {
 }
 
 .design .bell {
-  width: 100rpx;
-  height: 100rpx;
+  width: 70rpx;
+  height: 65rpx;
+  margin-left: 10rpx;
+  margin-top: 35rpx;
 }
 
 .loading-bar {
@@ -157,6 +159,15 @@ image {
   z-index: 2;
 }
 
+.weather-layer .static-star {
+  position: absolute;
+  top: 161rpx;
+  left: 65rpx;
+  width: 200rpx;
+  height: 200rpx;
+  z-index: 3;
+}
+
 .ps-layers {
   position: absolute;
   z-index: 40;
@@ -167,6 +178,12 @@ image {
   left: 0;
   right: 0;
   margin: 0 auto;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.ps-layers.ps-layers-1 {
+  /* top: 260rpx; */
 }
 
 .background-layer {
@@ -201,11 +218,11 @@ image {
 }
 
 .dress-layer .hat {
-  width: 166.8rpx;
-  height: 92.4rpx;
+  width: 139rpx;
+  height: 77rpx;
   position: absolute;
-  top: 41rpx;
-  left: 52rpx;
+  top: 89rpx;
+  left: 47rpx;
   right: 0;
   margin: 0 auto;
   z-index: 2;
@@ -214,36 +231,36 @@ image {
 .hat.hat-2 {
   width: calc(151rpx * 1);
   height: calc(61rpx * 1);
-  top: 80rpx;
-  left: 20rpx;
+  top: 94rpx;
+  left: 8rpx;
 }
 
 .hat.hat-3 {
-  width: calc(89rpx * 1.2);
-  height: calc(75rpx * 1.2);
+  width: calc(89rpx);
+  height: calc(75rpx);
   left: 2rpx;
-  top: 20rpx;
+  top: 75rpx;
 }
 
 .hat.hat-4 {
   width: calc(122rpx * 1);
   height: calc(84rpx * 1);
-  top: 31rpx;
-  left: 6rpx;
+  top: 78rpx;
+  left: 1rpx;
 }
 
 .hat.hat-5 {
   width: calc(199rpx * 1);
   height: calc(124rpx * 1);
-  top: 19rpx;
-  left: 15rpx;
+  top: 40rpx;
+  left: 1rpx;
 }
 
 .dress-layer .body {
-  width: 176.4rpx;
-  height: 224.4rpx;
+  width: 145rpx;
+  height: 184rpx;
   position: absolute;
-  top: 241rpx;
+  top: 287rpx;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -251,30 +268,31 @@ image {
 }
 
 .body.body-2 {
-  width: calc(269rpx * 1);
-  height: calc(187rpx * 1);
-  left: 15rpx;
-  top: 276rpx;
+  width: 212rpx;
+  height: 185rpx;
+  left: 0rpx;
+  top: 287rpx;
 }
 
 .body.body-3 {
-  width: calc(166rpx * 1.2);
-  height: calc(180rpx * 1.2);
-  top: 263rpx;
+  width: 185rpx;
+  height: 185rpx;
+  top: 295rpx;
+  left: 4rpx;
 }
 
 .body.body-4 {
-  width: calc(236rpx * 1.2);
-  height: calc(186rpx * 1.2);
-  top: 249rpx;
-  left: 62rpx;
+  width: 212rpx;
+  height: 184rpx;
+  top: 292rpx;
+  left: 44rpx;
 }
 
 .body.body-5 {
-  width: calc(293rpx * 1);
-  height: calc(305rpx * 1);
-  top: 168rpx;
-  left: 85rpx;
+  width: 268rpx;
+  height: 307rpx;
+  top: 173rpx;
+  left: 72rpx;
 }
 
 .dress-layer .footer {
@@ -327,6 +345,14 @@ image {
   top: 20rpx;
 }
 
+.decoration.static-decor {
+  width: 500rpx;
+  height: 500rpx;
+  right: -73rpx;
+  top: -36rpx;
+  z-index: 5;
+}
+
 .decoration.decoration-4 {
   width: 149rpx;
   height: 269rpx;
@@ -337,15 +363,23 @@ image {
 .face-layer {
   position: absolute;
   z-index: 2;
-  width: 288rpx;
-  height: 288rpx;
-  top: 16rpx;
-  left: -8rpx;
+  width: 250rpx;
+  height: 300rpx;
+  top: 72rpx;
+  left: 2rpx;
   right: 0;
   margin: 0 auto;
 }
 
-.face-dress-2 {
+/* 首页固定gif */
+.face-layer.static-face {
+  width: 300rpx;
+  height: 400rpx;
+  top: 63rpx;
+  left: 15rpx;
+}
+
+/* .face-dress-2 {
   top: 46rpx;
   left: 0;
 }
@@ -358,7 +392,7 @@ image {
 .face-dress-5 {
   top: 58rpx;
   left: 0rpx;
-}
+} */
 
 /* 猫图层 */
 .cat-layers {
@@ -368,6 +402,11 @@ image {
   z-index: 45;
   top: 597rpx;
   left: 10rpx;
+  top: calc(50% + 77rpx);
+}
+
+.cat-layers.cat-layers-1 {
+  /* top: 614rpx; */
 }
 
 .cat-layers .cat_buou {
@@ -375,8 +414,13 @@ image {
   width: 209rpx;
   height: 141rpx;
   right: 86rpx;
-  top: 58rpx;
+  top: 64rpx;
   z-index: 2;
+}
+
+.cat_buou.static-buou {
+  width: 220rpx;
+  height: 200rpx;
 }
 
 .cat-layers .cat_yingduan {
@@ -387,6 +431,12 @@ image {
   top: 31rpx;
   z-index: 2;
 
+}
+
+.cat_yingduan.static-yingduan {
+  width: 220rpx;
+  height: 200rpx;
+  top: 60rpx;
 }
 
 .cat-layers .caidai {
@@ -848,4 +898,127 @@ image {
   position: absolute;
   top: 36rpx;
   right: 36rpx;
+}
+
+@keyframes zy {
+  10% {
+    transform: rotate(15deg);
+  }
+
+  20% {
+    transform: rotate(-10deg);
+  }
+
+  30% {
+    transform: rotate(5deg);
+  }
+
+  40% {
+    transform: rotate(-5deg);
+  }
+
+  50%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.zy-bell {
+  /* float: left;
+  width: 60px;
+  height: 60px; */
+  animation: zy 1.5s .15s ease-in-out infinite;
+}
+
+
+/* 雪花背景 */
+.snow-container {
+  position: absolute;
+  height: 500px;
+  width: 100%;
+  max-width: 100%;
+  top: 0;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+  /* background-color: red; */
+}
+
+.snow {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  /* -webkit-transform: translate3d(0, -100%, 0); */
+  transform: translate3d(0, -100%, 0);
+  /* -webkit-animation: snow linear infinite; */
+  animation: snow linear infinite;
+}
+
+.snow.foreground {
+  /* background-image: url("./../../images/home/snow-foreground.png"); */
+  animation-duration: 15s;
+}
+
+.snow.foreground.layered {
+  animation-delay: 7.5s;
+}
+
+.snow.middleground {
+  /* background-image: url(./../../images/home/snow-tiny.png); */
+  animation-duration: 20s;
+}
+
+.snow.middleground.layered {
+  animation-delay: 10s;
+}
+
+.snow.background {
+  /* background-image: url(./../../images/home/snow-large.png); */
+  animation-duration: 30s;
+}
+
+.snow.background.layered {
+  animation-delay: 15s;
+}
+
+
+@keyframes snow {
+  0% {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(15%, 100%, 0);
+    transform: translate3d(15%, 100%, 0);
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animation-fade {
+  position: absolute;
+  animation-name: fadeInOut;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  animation-duration: 3s;
+  animation-direction: alternate;
+}
+
+.loading-files {
+  width: 0;
+  height: 0;
+  opacity: 0;
 }
