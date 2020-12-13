@@ -29,8 +29,65 @@
     </image>
   </view>
 
+  <!-- 分享打开 图层区域 -->
+  <view class="layer" wx-if="{{status === 8 && shareInfo._id}}">
+
+    <!-- slogan图层 -->
+    <view class="slogan-layer">
+      <view class="s-l-box">
+        <image class="slogan1 sm" src="./../../images/home/slogan-1.png"></image>
+        <image class="slogan3" src="./../../images/home/slogan-3.png"></image>
+      </view>
+    </view>
+
+    <!-- 天气weather图层 -->
+    <view class="weather-layer">
+      <image class="wt" src="./../../images/home/weather/w_{{shareInfo.weatherId}}.png" mode="scaleToFill"></image>
+      <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+    </view>
+
+    <!-- 贴图层 -->
+    <view class="ps-layers">
+      <!-- 主体background背景图层 -->
+      <view class="background-layer background-{{shareInfo.backgroundId}}">
+        <image class="wt" src="./../../images/home/background/{{shareInfo.backgroundId}}_box.png" mode="scaleToFill">
+        </image>
+      </view>
+      <!-- 服装dress图层 -->
+      <view class="dress-layer">
+        <image class="hat hat-{{shareInfo.dressId}}" src="./../../images/home/dress/{{shareInfo.dressId}}_hat.png"
+          mode="scaleToFill"></image>
+        <image class="body body-{{shareInfo.dressId}}" src="./../../images/home/dress/{{shareInfo.dressId}}_body.png"
+          mode="scaleToFill"></image>
+        <image class="footer footer-{{shareInfo.dressId}}"
+          src="./../../images/home/dress/{{shareInfo.dressId}}_footer.png" mode="scaleToFill"></image>
+        <image wx-if="{{(shareInfo.dressId === '2' || shareInfo.dressId === '4') && shareInfo.backgroundId !== '2'}}"
+          class="decoration decoration-{{shareInfo.dressId}}"
+          src="./../../images/home/dress/{{shareInfo.dressId}}_decoration.png" mode="scaleToFill"></image>
+      </view>
+      <!-- 人脸face图层 -->
+      <view class="face-layer face-{{shareInfo.faceId}} face-dress-{{shareInfo.dressId}}">
+        <image src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/face/{{shareInfo.faceId}}.png"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+
+    <!-- 布偶猫 -->
+    <view class="cat-layers">
+      <view class="cat_buou">
+        <image class="land" src="./../../images/home/cat_buou.png" mode="scaleToFill"></image>
+      </view>
+      <view class="cat_yingduan">
+        <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
+      </view>
+      <view class="caidai">
+        <image class="land" src="./../../images/home/caidai.png" mode="scaleToFill"></image>
+      </view>
+    </view>
+  </view>
+
   <!-- 图层区域 -->
-  <view class="layer">
+  <view class="layer" wx-if="{{status !== 8}}">
 
     <!-- slogan图层 -->
     <view class="slogan-layer">
@@ -218,13 +275,8 @@
 
     <!-- status: 8 -->
     <view class="sts8" wx:if="{{status === 8}}">
-      <view class="radio-bar">
-        <view class="radio-icon">
-          <image src="./../../images/home/audio.png"></image>
-        </view>
-        <view class="radio-txt">
-          点击听听我的圣诞祝福
-        </view>
+      <view class="radio-bar" bindtap="recordingAndPlaying">
+        <image src="./../../images/home/complete.png"></image>
       </view>
       <view class="btn-group">
         <view class="btn8 btn-prev">

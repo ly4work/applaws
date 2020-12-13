@@ -8,7 +8,7 @@ const recorderManager = wx.getRecorderManager()
 const backgroundAudioManager = wx.getBackgroundAudioManager()
 //添加音效
 const innerAudioContext = wx.createInnerAudioContext()
-innerAudioContext.autoplay = true // 是否自动开始播放，默认为 false
+// innerAudioContext.autoplay = true // 是否自动开始播放，默认为 false
 innerAudioContext.loop = true // 是否循环播放，默认为 false
 wx.setInnerAudioOption({ // ios在静音状态下能够正常播放音效
   obeyMuteSwitch: false, // 是否遵循系统静音开关，默认为 true。当此参数为 false 时，即使用户打开了静音开关，也能继续发出声音。
@@ -21,6 +21,11 @@ wx.setInnerAudioOption({ // ios在静音状态下能够正常播放音效
     console.log('play fail')
   }
 })
+// wx.playBackgroundAudio({
+//   dataUrl: 'https://7465-test-7gniicn9893dca9d-1304476931.tcb.qcloud.la/sounds/1607697380956-79354.mp3',
+//   title: '',
+//   coverImgUrl: ''
+// })
 innerAudioContext.src = 'https://7465-test-7gniicn9893dca9d-1304476931.tcb.qcloud.la/sounds/1607697380956-79354.mp3'; // 音频资源的地址
 innerAudioContext.onPlay(() => { // 监听音频播放事件
   console.log('开始播放')
@@ -72,7 +77,7 @@ Page({
     // 7 - Complete 贺卡制作结束
     // 8 - Received 打开分享的页面
     cacheImageList,
-    status: 7,
+    status: 0,
     openId: '',
     gender: 'male',
     glass: 'no-glass',
@@ -81,6 +86,10 @@ Page({
     cloudStorageId: '7465-test-7gniicn9893dca9d-1304476931',
     bgMusicPlayStatus: true,
     currentStatus2Tab: 0,
+    fromShare: true,
+    shareInfo: {
+
+    },
     status2Tabs: [{
         key: 'dress',
         title: '服饰装饰'
@@ -133,7 +142,7 @@ Page({
     preLoadProgressPercent: 0,
   },
   handleLoadImage: function (e) {
-    console.log(e.currentTarget.dataset)
+    // console.log(e.currentTarget.dataset)
     this.setData({
       preLoadCount: this.data.preLoadCount + 1,
       preLoadProgressPercent: (this.data.preLoadCount + 1) / this.data.cacheImageList.length * 100
@@ -145,9 +154,17 @@ Page({
           preLoadProgressPercent: 100,
         })
         setTimeout(() => {
-          this.setData({
-            status: 1
-          })
+          //  不是来源于分享则显示status 1
+          console.log('fromShare', this.data.fromShare)
+          if (!this.data.fromShare) {
+            this.setData({
+              status: 1
+            })
+          } else {
+            this.setData({
+              status: 8
+            })
+          }
         }, 300);
       }
     })
@@ -401,6 +418,7 @@ Page({
       recordId: this.data.soundUrl,
       weatherId: "1"
     }
+
     console.log(params)
     // 插入表 card_list user_list
     const addCardRes = await db.collection('card_list').add({
@@ -443,7 +461,7 @@ Page({
   },
   toPageLuckyWheel: function () {
     wx.navigateTo({
-      url: '/pages/luckywheel/index',
+      url: `/pages/luckywheel/index?id=12313123`,
       events: {
         // // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
         // acceptDataFromOpenedPage: function(data) {
@@ -454,6 +472,7 @@ Page({
         // }
       },
       success: function (res) {
+        console.log(res)
         // // 通过eventChannel向被打开页面传送数据
         // res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
       }
@@ -462,26 +481,38 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    const that = this
-
+  onLoad: async function (options) {
+    console.log('options::', options)
+    wx.showToast({
+      title: JSON.stringify(options),
+    })
+    if (options.cardId) {
+      this.setData({
+        status: 8,
+        fromShare: true
+      })
+      //  查询card_list表的数据
+      const res = db.collection('card_list').doc(options.cardId).get()
+      console.log(res)
+    }
+    const res = await db.collection('card_list').doc('8ac0e22b5fd5b958001302411ee8eeb1').get()
+    console.log('card:::', res.data)
+    this.setData({
+      shareInfo: {
+        ...res.data
+      }
+    })
     wx.cloud.callFunction({
       name: 'login',
       success: res => {
         console.log('res:=>', res)
-        that.setData({
+        this.setData({
           openId: res.result.openid
         })
       },
       fail: err => {
         console.log(err)
       }
-    })
-  },
-  handleShare: function () {
-    wx.updateShareMenu({
-      withShareTicket: true,
-      success() {}
     })
   },
   /**
@@ -494,7 +525,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function (options) {
 
   },
 
@@ -529,7 +560,34 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    const cardId = this.data.cardId
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log('from button', `?cardId=${this.data.cardId || 123}`)
+      return {
+        title: '快来听听我的祝福吧',
+        path: `/pages/home/index?cardId=${this.data.cardId || 123}`,
+        success: function (res) {
+          // 转发成功
+          console.log(res)
+        },
+        fail: function (res) {
+          // 转发失败
+          console.log(res)
+        }
+      }
 
+    }
+    return {
+      title: '自定义转发标题222',
+      path: '/pages/home/index?card=123123',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
   }
 })

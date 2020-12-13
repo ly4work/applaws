@@ -11,7 +11,7 @@
   </view>
 
   <!-- 规则button -->
-  <view class="rules-layer">
+  <view class="rules-layer"  bindtap="handleCheckRuleModal">
     活动规则
   </view>
   <!-- 转盘区域 -->
@@ -36,7 +36,7 @@
         <view class="btn7 btn-prev" bindtap="handleBackPage">
           <image src="./../../images/home/buttons/prev.png"></image>
         </view>
-        <view class="btn7 btn-next">
+        <view class="btn7 btn-next" bindtap="handleCheckMygiftModal">
           <image src="./../../images/home/buttons/my_gift.png"></image>
         </view>
       </view>
@@ -60,7 +60,7 @@
         <view class="prize-copy-tips" wx:if="{{currentPrize.type === 2}}">
           复制优惠券去淘宝打开
         </view>
-        <view class="prize-button exchange" wx:if="{{currentPrize.type === 1}}">
+        <view class="prize-button exchange" bindtap="handleCheckDoubleModal" wx:if="{{currentPrize.type === 1}}">
           <image src="./../../images/home/buttons/to_exchange.png"></image>
         </view>
       </view>
@@ -101,7 +101,36 @@
       </view>
     </view>
   </view>
+  <!-- modal 我的奖品 -->
+  <view class="modal modal-exchange modal-mygift" wx:if="{{modalStatusMap.mygift}}">
+    <view class="modal-trans">
+      <view class="content mgcontent">
+        <view class="exchange-close" bindtap="handleCheckMygiftModal">
+          <image src="./../../images/home/buttons/close.png"></image>
+        </view>
+        <image src="./../../images/home/modal/exchange.png"></image>
+        <view class="list">
+          <view class="header">我的奖品</view>
+          <view class="cell" wx:for="{{myGiftList}}" wx:key="prizeId">
+            <text>{{index + 1}} </text> {{item.name}} <text wx:if="{{!item.isCheckIn}}" data-item="item"
+              bindtap="handleChangeToSubmitModal">提交资料</text>
+          </view>
+        </view>
 
+      </view>
+    </view>
+  </view>
+  <!-- modal activity活动介绍 -->
+  <view class="modal modal-activity" wx:if="{{modalStatusMap.rule}}">
+    <view class="modal-trans">
+      <view class="close" bindtap="handleCheckRuleModal">
+        <image src="./../../images/home/buttons/close.png"></image>
+      </view>
+      <view class="content">
+        <image src="./../../images/home/modal/modal-activity.png"></image>
+      </view>
+    </view>
+  </view>
   <!-- footer -->
   <view class="footer" wx:if="{{status === 1}}">
     最终解释权归applaws所有

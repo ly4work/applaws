@@ -28,12 +28,15 @@ Page({
     openId: '',
     modalStatusMap: {
       reward: false,
-      exchange: true
+      exchange: false,
+      mygift: false,
+      rule: false
     },
     currentPrize: {
       type: 1,
       command: 'testX))*@#@#*)!*@)#@'
-    }
+    },
+    myGiftList: []
   },
   start: async function () {
     //  先查询用户，当前这一天，是否抽过奖
@@ -98,20 +101,24 @@ Page({
 
       //  动画转盘
       let animation = wx.createAnimation({ //创建动画实例
-        duration: 6000,
+        duration: 5000,
         timingFunction: 'ease-in-out'
       })
-      animation.rotate(360 * 3 + this.data.Prize[2]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
+      animation.rotate(360 * 12 + this.data.Prize[2]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
       this.setData({
         currentPrize: newPrize,
-        modalStatusMap: {
-          ...this.data.modalStatusMap,
-          reward: true
-        },
         animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
       })
 
       // 弹出中奖框
+      setTimeout(() => {
+        this.setData({
+          modalStatusMap: {
+            ...this.data.modalStatusMap,
+            reward: true
+          },
+        })
+      }, 5500);
     }
 
   },
@@ -143,6 +150,37 @@ Page({
       }
     })
   },
+  //  切换规则modal
+  handleCheckRuleModal: function () {
+    this.setData({
+      modalStatusMap: {
+        ...this.data.modalStatusMap,
+        rule: !this.data.modalStatusMap.rule
+      }
+    })
+  },
+  //  切换我的奖品modal
+  handleCheckMygiftModal: function () {
+    this.setData({
+      modalStatusMap: {
+        ...this.data.modalStatusMap,
+        mygift: !this.data.modalStatusMap.mygift
+      }
+    }, async () => {
+      if (this.data.modalStatusMap.mygift) {
+        //  查询user_list 获取用户奖品列表
+        const queryUserRes = await db.collection('user_list').where({
+          openId: this.data.openId
+        }).get()
+        const userInfo = queryUserRes.data[0]
+        const prizeList = userInfo.prizeList
+        console.log(prizeList)
+        this.setData({
+          myGiftList: prizeList
+        })
+      }
+    })
+  },
   handleCheckExchangeModal: function () {
     // console.log(this.data.modalStatusMap.activity)
     this.setData({
@@ -152,9 +190,62 @@ Page({
       }
     })
   },
-  formSubmit(e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+  //  关闭中奖modal，打开兑奖modal
+  handleCheckDoubleModal: function () {
+    this.handleCheckRewardModal()
+    this.handleCheckExchangeModal()
+  },
+  //  关闭我的奖品modal，打开兑奖modal
+  handleChangeToSubmitModal: function (e) {
+    const item = e.currentTarget.dataset.item
+    this.setData({
+      currentPrize: item
+    }, () => {
+      this.handleCheckExchangeModal()
+      this.handleCheckMygiftModal()
+    })
+  },
+  async formSubmit(e) {
+    // console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    //  插入到prize_list和user_list
+    wx.showLoading({
+      title: '正在提交...',
+    })
+    const luckyGift = this.data.currentPrize
+    const queryUserRes = await db.collection('user_list').where({
+      openId: this.data.openId
+    }).get()
 
+    const userInfo = queryUserRes.data[0]
+    console.log('userInfo::::,', userInfo)
+    let oldPrizeInfoIndex = userInfo.prizeList.findIndex((item => item.prizeId === luckyGift.prizeId))
+
+    const newPrizeList = queryUserRes.data[0].prizeList
+    newPrizeList[oldPrizeInfoIndex] = {
+      ...newPrizeList[oldPrizeInfoIndex],
+      isCheckIn: true,
+      ...e.detail.value
+    }
+    // update user prizeList
+    await db.collection('user_list').doc(userInfo._id).update({
+      data: {
+        prizeList: newPrizeList
+      }
+    })
+
+    //  update prize 
+    await db.collection('prize_list').doc(luckyGift.prizeId).update({
+      data: {
+        isCheckIn: true,
+        ...e.detail.value
+      }
+    })
+    wx.hideLoading()
+    wx.showToast({
+      title: '提交成功！',
+      icon: 'none'
+    })
+    this.handleCheckExchangeModal()
   },
   closeWin() {
     this.animation.rotate(0).step()
@@ -168,14 +259,14 @@ Page({
     const min = 1
     const num = parseInt(Math.random() * (max - min + 1) + min)
     let probability = 0
-    //  一等奖
-    if (num >= 1 && num <= 2) {
+    //  一等奖 虚拟2
+    if (num >= 1 && num <= 1) {
       probability = 2
-    } else if (num > 2 && num <= 90) {
-      //  三等奖
+    } else if (num > 2 && num <= 3) {
+      //  三等奖 虚拟1
       probability = 88
     } else {
-      //  二等奖
+      //  二等奖 实物1
       probability = 10
     }
     return this.data.gifts.find((item) => item.probability === probability)
@@ -184,6 +275,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    console.log('options::', options)
+    wx.showToast({
+      title: JSON.stringify(options),
+    })
     const res = await db.collection('gift_list').get()
     this.setData({
       gifts: res.data
@@ -249,6 +344,15 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '自定义转发标题',
+      path: '/pages/home/index?card=123123',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
   }
 })
