@@ -22,7 +22,7 @@ Page({
    */
   data: {
     animationData: {}, //初始动画数据
-    Prize: [45, 90, 135], //45度安慰奖，90度二等奖，135度一等奖
+    Prize: [270, 180, 225], //225度三等奖，180度二等奖，270度一等奖
     flag: false,
     gifts: [],
     openId: '',
@@ -34,12 +34,12 @@ Page({
     },
     currentPrize: {
       type: 1,
-      command: 'testX))*@#@#*)!*@)#@'
+      command: ''
     },
     myGiftList: []
   },
   start: async function () {
-    //  先查询用户，当前这一天，是否抽过奖
+    //  先查询用户当前这一天，是否抽过奖
     const userInfoRes = await db.collection('user_list').where({
       openId: this.data.openId
     }).get()
@@ -104,7 +104,7 @@ Page({
         duration: 5000,
         timingFunction: 'ease-in-out'
       })
-      animation.rotate(360 * 12 + this.data.Prize[2]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
+      animation.rotate(360 * 10 + this.data.Prize[luckyGift.level - 1]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
       this.setData({
         currentPrize: newPrize,
         animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
@@ -126,15 +126,14 @@ Page({
     wx.navigateBack()
   },
   copyText: function (e) {
-    console.log(e)
     wx.setClipboardData({
       data: e.currentTarget.dataset.text,
       success: function (res) {
         wx.getClipboardData({
           success: function (res) {
-            wx.showToast({
-              title: '口令复制成功'
-            })
+            // wx.showToast({
+            //   title: '口令复制成功'
+            // })
           }
         })
       }
@@ -159,6 +158,20 @@ Page({
       }
     })
   },
+  // 点击我的奖品-虚拟奖品 弹出奖品详情框
+  handleOpenPrizeModal: function (e) {
+    const item = e.currentTarget.dataset.item
+    if (item.type === 2)
+      this.setData({
+        currentPrize: item,
+        modalStatusMap: {
+          mygift: false,
+          exchange: false,
+          rule: false,
+          reward: true
+        }
+      })
+  },
   //  切换我的奖品modal
   handleCheckMygiftModal: function () {
     this.setData({
@@ -182,7 +195,6 @@ Page({
     })
   },
   handleCheckExchangeModal: function () {
-    // console.log(this.data.modalStatusMap.activity)
     this.setData({
       modalStatusMap: {
         ...this.data.modalStatusMap,
@@ -255,21 +267,21 @@ Page({
   },
   // 中奖函数
   handleRandom: function () {
-    const max = 100
+    const max = 1000
     const min = 1
     const num = parseInt(Math.random() * (max - min + 1) + min)
     let probability = 0
-    //  一等奖 虚拟2
-    if (num >= 1 && num <= 2) {
-      probability = 2
-    } else if (num > 2 && num <= 89) {
-      //  三等奖 虚拟1
-      probability = 88
-    } else {
-      //  二等奖 实物1
+    //  一等奖 全年爱普士猫罐头一箱锦鲤大奖（0.5%）
+    if (num >= 1 && num <= 5) {
+      probability = 5
+    } else if (num >= 6 && num <= 15) {
+      // 二等奖 爱普士圣诞礼包 鱼柳肉条*5（1%）
       probability = 10
+    } else {
+      //   三等奖 爱普士天猫期舰店优惠券10元（100%）
+      probability = 985
     }
-    return this.data.gifts.find((item) => item.probability === probability)
+    return this.data.gifts.find((item) => item.probability === (probability / 10))
   },
   /**
    * 生命周期函数--监听页面加载
@@ -345,8 +357,8 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: '自定义转发标题',
-      path: '/pages/home/index?card=123123',
+      title: 'Applaws圣诞把“爱”说出来，有好礼！有惊喜！录制语音祝福，定制只属于您的心愿水晶球！',
+      path: '/pages/home/index',
       success: function (res) {
         // 转发成功
       },

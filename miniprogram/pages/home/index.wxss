@@ -179,11 +179,13 @@ image {
   right: 0;
   margin: 0 auto;
   transform: translateY(-50%);
-  top: 40%;
+  /* top: 40%; */
+  top: 50%;
+
 }
 
-.ps-layers.ps-layers-1 {
-  /* top: 260rpx; */
+.ps-layers.ps-layers-2{
+  top: 40%;
 }
 
 .background-layer {
@@ -400,14 +402,18 @@ image {
   width: 100%;
   height: 176rpx;
   z-index: 45;
-  top: calc(40% + 97rpx);
+  /* top: calc(40% + 97rpx); */
+  top: calc(50% + 77rpx);
+
   left: 10rpx;
 }
-
-.cat-layers.cat-layers-1 {
-  /* top: 614rpx; */
-  top: calc(40% + 77rpx);
+.cat-layers.cat-layers-2 {
+  top: calc(40% + 97rpx);
 }
+/* .cat-layers.cat-layers-1, .cat-layers.cat-layers-7, .cat-layers.cat-layers-8 {
+  top: 614rpx;
+  top: calc(50% + 77rpx);
+} */
 
 .cat-layers .cat_buou {
   position: absolute;
@@ -447,7 +453,7 @@ image {
   left: 0;
   right: 0;
   margin: 0 auto;
-  top: 50rpx
+  top: 50rpx;
 }
 
 /* 操作区域 */
@@ -456,12 +462,15 @@ image {
   z-index: 50;
   bottom: 12rpx;
   width: 100%;
+  bottom: 6% !important;
 }
 
 .operation.ope-1 {
-  bottom: 58rpx;
+  /* bottom: 58rpx; */
 }
-
+.operation.ope-2 {
+  /* bottom: 58rpx !important; */
+}
 /* status 1 */
 .sts1 {
   display: flex;

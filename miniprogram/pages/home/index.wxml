@@ -25,7 +25,9 @@
 
   <!-- 背景音乐layer 顶层layer -->
   <view class="music-layer" bindtap="handleCheckBgMusicStatus">
-    <image class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}" src="./../../images/home/music-icon.png">
+    <image wx-if="{{bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}" src="./../../images/home/music-icon.png">
+    </image>
+    <image wx-if="{{!bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}" src="./../../images/home/jingyin.png">
     </image>
   </view>
 
@@ -89,10 +91,10 @@
     </view>
 
     <!-- 布偶猫 -->
-    <view class="cat-layers">
-      <view class="cat_buou">
+    <view class="cat-layers cat-layers-8">
+      <!-- <view class="cat_buou">
         <image class="land" src="./../../images/home/cat_buou.png" mode="scaleToFill"></image>
-      </view>
+      </view> -->
       <view class="cat_yingduan">
         <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
       </view>
@@ -163,10 +165,10 @@
 
     <!-- 布偶猫 -->
     <view class="cat-layers cat-layers-1">
-      <view class="cat_buou static-buou">
+      <!-- <view class="cat_buou static-buou">
         <image class="land" src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/布偶.gif"
           mode="scaleToFill"></image>
-      </view>
+      </view> -->
       <view class="cat_yingduan static-yingduan">
         <image class="land" src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/蓝猫.gif"
           mode="scaleToFill"></image>
@@ -210,7 +212,7 @@
     </view>
 
     <!-- 贴图层 -->
-    <view class="ps-layers">
+    <view class="ps-layers ps-layers-{{status}}">
       <!-- 主体background背景图层 -->
       <view class="background-layer background-{{currentBackgroundTab.id}}">
         <image class="wt" src="./../../images/home/background/{{currentBackgroundTab.id}}_box.png" mode="scaleToFill">
@@ -236,10 +238,10 @@
     </view>
 
     <!-- 布偶猫 -->
-    <view class="cat-layers">
-      <view class="cat_buou">
+    <view class="cat-layers cat-layers-{{status}}">
+      <!-- <view class="cat_buou">
         <image class="land" src="./../../images/home/cat_buou.png" mode="scaleToFill"></image>
-      </view>
+      </view> -->
       <view class="cat_yingduan">
         <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
       </view>
@@ -393,7 +395,7 @@
 
   <!-- footer -->
   <view class="copyright" wx:if="{{status === 1}}">
-    最终解释权归applaws所有
+    最终解释权归Applaws所有
   </view>
 
   <!-- modal activity活动介绍 -->

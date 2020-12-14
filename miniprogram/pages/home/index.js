@@ -3,10 +3,9 @@ import Utils from './../../utils/index'
 
 //  录音实例
 const recorderManager = wx.getRecorderManager()
-// const backgroundAudio = wx.getBackgroundAudioManager()
 // 背景音频实例
 const backgroundAudioManager = wx.getBackgroundAudioManager()
-//添加音效
+// 添加音效
 const innerAudioContext = wx.createInnerAudioContext()
 innerAudioContext.autoplay = true // 是否自动开始播放，默认为 false
 innerAudioContext.loop = true // 是否循环播放，默认为 false
@@ -21,12 +20,8 @@ wx.setInnerAudioOption({ // ios在静音状态下能够正常播放音效
     console.log('play fail')
   }
 })
-// wx.playBackgroundAudio({
-//   dataUrl: 'https://7465-test-7gniicn9893dca9d-1304476931.tcb.qcloud.la/sounds/1607697380956-79354.mp3',
-//   // title: '',
-//   // coverImgUrl: ''
-// })
-innerAudioContext.src = 'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/sounds/1607854027482-25169.mp3'; // 音频资源的地址
+
+innerAudioContext.src = 'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/applaws-music.mp3'; // 音频资源的地址
 innerAudioContext.onPlay(() => { // 监听音频播放事件
   console.log('开始播放')
 })
@@ -210,44 +205,37 @@ Page({
     preLoadProgressPercent: 0,
   },
   handleLoadImage: function (e) {
-    // console.log(e.currentTarget.dataset)
     this.setData({
       preLoadCount: this.data.preLoadCount + 1,
       preLoadProgressPercent: (this.data.preLoadCount + 1) / this.data.cacheImageList.length * 100
     }, () => {
-      // console.log(this.data.preLoadProgressPercent)
-      //  加载完，设置 init status 1
       if (this.data.preLoadCount === this.data.cacheImageList.length) {
         this.setData({
           preLoadProgressPercent: 100,
         })
-        // setTimeout(() => {
-        //  不是来源于分享则显示status 1
-        console.log('fromShare', this.data.fromShare)
+        // //  进度层淡出 暂时取消掉
+        // let animation = wx.createAnimation({ //创建动画实例
+        //   duration: 800,
+        //   timingFunction: 'ease'
+        // })
+        // animation.opacity(0).step()
+        // this.setData({
+        //   animationData: animation.export() 
+        // })
 
-        //  进度层淡出
-        let animation = wx.createAnimation({ //创建动画实例
-          duration: 800,
-          timingFunction: 'ease'
-        })
-        animation.opacity(0).step()
-        this.setData({
-          animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
-        })
         setTimeout(() => {
+          //  不是来源于分享则显示status 1
           if (!this.data.fromShare) {
             this.setData({
               status: 1
             })
           } else {
+            //  否则显示贺卡页
             this.setData({
               status: 8
             })
           }
         }, 500);
-
-
-        // }, 300);
       }
     })
   },
@@ -256,7 +244,7 @@ Page({
     if (!this.data.bgMusicPlayStatus) {
       innerAudioContext.play()
     } else {
-      innerAudioContext.stop()
+      innerAudioContext.pause()
     }
     this.setData({
       bgMusicPlayStatus: !this.data.bgMusicPlayStatus
@@ -265,7 +253,6 @@ Page({
 
   //  切换活动modal
   handleCheckActivityModal: function () {
-    console.log(this.data.modalStatusMap.activity)
     this.setData({
       modalStatusMap: {
         ...this.data.modalStatusMap,
@@ -278,7 +265,6 @@ Page({
     const that = this
     this.handleChooseFace(() => {
       that.handleNext()
-      // this.handleCheckBgMusicStatus()
       innerAudioContext.play()
       this.setData({
         bgMusicPlayStatus: true
@@ -300,28 +286,24 @@ Page({
   //  指定步骤
   handleSetStep: function (e) {
     const step = e.currentTarget.dataset.step
-    console.log(step)
     this.setData({
       status: Number(step)
     })
   },
   // 切换 status2换装衣柜tab
   handleCheckStatus2Tab: function (e) {
-    console.log(e.currentTarget.dataset.index)
     this.setData({
       currentStatus2Tab: e.currentTarget.dataset.index
     })
   },
   //  切换服装 dress tab
   handleCheckDressTab: function (e) {
-    console.log(e.currentTarget.dataset.index)
     let randomWeatherId = Number(this.data.currentWeatherId)
     if (randomWeatherId === 3) {
       randomWeatherId = 1
     } else {
       randomWeatherId += 1
     }
-    console.log(randomWeatherId, 'randomWeatherId')
     this.setData({
       currentDressTab: e.currentTarget.dataset.item,
       currentWeatherId: String(randomWeatherId)
@@ -329,7 +311,6 @@ Page({
   },
   //  切换背景 background tab
   handleCheckBackgroundTab: function (e) {
-    console.log(e.currentTarget.dataset.index)
     this.setData({
       currentBackgroundTab: e.currentTarget.dataset.item
     })
@@ -361,24 +342,70 @@ Page({
     })
   },
   handleChooseFace: function (cb) {
+    //  先判断系统，ios直接调用chooseImage，安卓模拟先调起actionsheet
+    let systemInfo = null
+    try {
+      systemInfo = wx.getSystemInfoSync()
+    } catch (e) {}
     const self = this
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      success: function (res) {
-        const base64Img = Utils.img2Base64({
-          imgPath: res
-        })
-        self.identifyFace(base64Img, cb)
-      },
-      fail: function (err) {}
-    })
+    if (systemInfo.platform === 'ios') {
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: ['camera', 'album'],
+        success: function (res) {
+          const base64Img = Utils.img2Base64({
+            imgPath: res
+          })
+          self.identifyFace(base64Img, cb)
+        },
+        fail: function (err) {
+          // wx.showModal({
+          //   cancelColor: 'cancelColor',
+          //   content: JSON.stringify(err)
+          // })
+        }
+      })
+    } else {
+      wx.showActionSheet({
+        itemList: ['拍照', '从手机相册选择'],
+        success(res) {
+          let sourceType = []
+          if (res.tapIndex === 0) {
+            sourceType.push('camera')
+          } else {
+            sourceType.push('album')
+          }
+          wx.chooseImage({
+            count: 1,
+            sizeType: ['compressed'],
+            sourceType,
+            success: function (res) {
+              const base64Img = Utils.img2Base64({
+                imgPath: res
+              })
+              self.identifyFace(base64Img, cb)
+            },
+            fail: function (err) {
+              // wx.showModal({
+              //   cancelColor: 'cancelColor',
+              //   content: JSON.stringify(err)
+              // })
+            }
+          })
+        },
+        fail(res) {
+          console.log(res.errMsg)
+        }
+      })
+    }
+
+
   },
 
   //开始录音
   openRecording: function () {
-    var that = this;
-    // this.handleCheckBgMusicStatus()
+    let that = this;
     innerAudioContext.pause()
     this.setData({
       bgMusicPlayStatus: false
@@ -399,8 +426,6 @@ Page({
       format: 'mp3', //音频格式，有效值 aac/mp3
       frameSize: 50, //指定帧大小，单位 KB
     }
-    //开始录音计时   
-    // that.recordingTimer();
     //开始录音
     this.handleNext()
     recorderManager.start(options);
@@ -414,7 +439,7 @@ Page({
   },
   //结束录音
   shutRecording: function () {
-    var that = this;
+    let that = this;
     //  录音上传完后才能到下一步试听
     this.handleNext()
     wx.showLoading({
@@ -435,38 +460,31 @@ Page({
     recorderManager.stop();
     recorderManager.onStop((res) => {
       const that = this
-      // let timestamp = util.formatTime2(new Date());
       let timestamp = +new Date();
       console.log('。。停止录音。。', res.tempFilePath)
       const {
         tempFilePath
       } = res;
-      //结束录音计时  
-      // clearInterval(that.data.setInter);
+      //  上传到云存储
       wx.cloud.uploadFile({
         cloudPath: "sounds/" + timestamp + '-' + this.randomNum(10000, 99999) + '.mp3',
         filePath: tempFilePath,
         // 成功回调
         success: res => {
           console.log('上传成功', res)
-          //  转换路径
+          //  路径转换规则
           // "https://7465-test-7gniicn9893dca9d-1304476931.tcb.qcloud.la/sounds"，为本项目所使用云开发环境所对应的路径将"cloud://newdj-d79af2.6e65-newdj-d79af2-1257790921/sounds"替换后即可使用
           that.setData({
             soundUrl: `https://${that.data.cloudStorageId}.tcb.qcloud.la/sounds${this.midstr(res.fileID)}`
-            // time: util.formatTime1(new Date())
           })
           wx.hideLoading()
-
         },
       })
     })
   },
   //录音播放
   recordingAndPlaying: function (eve) {
-    // innerAudioContext.pause()
-    // this.handleCheckBgMusicStatus()
     wx.playBackgroundAudio({
-      //播放地址
       dataUrl: this.data.soundUrl
     })
   },
@@ -492,20 +510,12 @@ Page({
     }
   },
   midstr(str) {
-    var strnum = str.lastIndexOf('/')
-    var ministr = str.substr(strnum)
+    const strnum = str.lastIndexOf('/')
+    const ministr = str.substr(strnum)
     return ministr
   },
   //  提交用户装扮数据
   handleSubmit: async function () {
-    let animation = wx.createAnimation({ //创建动画实例
-      duration: 0,
-      timingFunction: 'none'
-    })
-    animation.opacity(1).step()
-    this.setData({
-      animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
-    })
     const self = this
     await self.setData({
       preLoadProgressPercent: 0
@@ -513,9 +523,6 @@ Page({
     let timer = setInterval(() => {
       if (self.data.preLoadProgressPercent >= 100) {
         clearInterval(timer)
-        // self.setData({
-        //   preLoadProgressPercent: 0
-        // })
       } else {
         self.setData({
           preLoadProgressPercent: self.data.preLoadProgressPercent + 10
@@ -534,8 +541,6 @@ Page({
       recordId: this.data.soundUrl,
       weatherId: this.data.currentWeatherId
     }
-
-    console.log(params)
     // 插入表 card_list user_list
     const addCardRes = await db.collection('card_list').add({
       data: params,
@@ -545,6 +550,7 @@ Page({
       cardId: addCardRes._id
     })
 
+    //  查询用户数据
     const queryUserRes = await db.collection('user_list').where({
       openId: self.data.openId
     }).get()
@@ -586,20 +592,9 @@ Page({
   },
   toPageLuckyWheel: function () {
     wx.navigateTo({
-      url: `/pages/luckywheel/index?id=12313123`,
-      events: {
-        // // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-        // acceptDataFromOpenedPage: function(data) {
-        //   console.log(data)
-        // },
-        // someEvent: function(data) {
-        //   console.log(data)
-        // }
-      },
+      url: `/pages/luckywheel/index`,
       success: function (res) {
         console.log(res)
-        // // 通过eventChannel向被打开页面传送数据
-        // res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
       }
     })
   },
@@ -607,11 +602,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    console.log('options::', options)
-    // wx.showModal({
-    //   cancelColor: 'cancelColor',
-    //   content: JSON.stringify(options),
-    // })
     if (options.cardId) {
       this.setData({
         status: 8,
@@ -691,7 +681,7 @@ Page({
       // 来自页面内转发按钮
       // console.log('from button', `?cardId=${this.data.cardId || 123}`)
       return {
-        title: '快来听听我的祝福吧',
+        title: 'Applaws圣诞把“爱”说出来，有好礼！有惊喜！录制语音祝福，定制只属于您的心愿水晶球！',
         path: `/pages/home/index?cardId=${this.data.cardId || 123}`,
         success: function (res) {
           // 转发成功
@@ -705,8 +695,8 @@ Page({
 
     }
     return {
-      title: '自定义转发标题222',
-      path: '/pages/home/index?card=123123',
+      title: 'Applaws圣诞把“爱”说出来，有好礼！有惊喜！录制语音祝福，定制只属于您的心愿水晶球！',
+      path: '/pages/home/index',
       success: function (res) {
         // 转发成功
       },

@@ -17,7 +17,7 @@
 |  _id   |  主键  |  string    |
 |  openId   |  用户openId  |  string    |
 |  cardId   |  制作贺卡id |  string    | 只保留最后一次贺卡id，关联表card_list
-|  timestampTag${ts}   |  抽奖次数标记  |  int    | 规则为 timestampTag + YYYYMMDD( 当前日期时间戳)，如果前端调用抽奖前查询当日标记已添加，则无法再进行抽奖，查询的ts值必须在云函数中获取，ts取值为20201218 <= x <=20201225
+|  timestampTag${ts}   |  抽奖次数标记  |  int    | 规则为 timestampTag + YYYYMMDD( 当前日期时间戳)，如果前端调用抽奖前查询当日标记已添加，则无法再进行抽奖，查询的ts值必须在云函数中获取，ts取值为20201218 <= x <=20201231
 |  prizeList   |  中奖礼品列表  |  Array\<object>    | { prizeId: 中奖纪录id(关联表prize_list),giftId: 奖品id(关联表gift_id), time: 中奖时间, type: 奖品类型, name: 奖品名称, command: 虚拟奖品口令, isCheckIn: 实物奖品是否登记过地址信息, userName: 实物奖品登记姓名, userPhone: 实物奖品登记电话, userAddress: 实物奖品登记地址, userPetName: 实物奖品登记宠物姓名 }
 
 
@@ -43,6 +43,7 @@
 |  name   |  奖品名称  |  string    |
 |   command | 虚拟奖品口令 | string |
 |  probability   |  中奖概率 |  number    |
+|  level   |  奖品等级 |  number    |
 
 * [x] 活动列表 activity_list
 

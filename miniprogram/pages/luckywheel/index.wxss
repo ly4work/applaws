@@ -371,7 +371,15 @@ image {
   font-weight: 500;
   color: #FF4D29;
 }
-
+.list .cell text.p-name {
+  color: #333333;
+  font-size: 30rpx;
+}
+.list .cell text.p-submit {
+  color: #333333;
+  font-size: 20rpx;
+  float: right;
+}
 .list .header {
   font-size: 40rpx;
   font-family: SourceHanSansCN-Medium, SourceHanSansCN;

@@ -112,7 +112,8 @@
         <view class="list">
           <view class="header">我的奖品</view>
           <view class="cell" wx:for="{{myGiftList}}" wx:key="prizeId">
-            <text>{{index + 1}} </text> {{item.name}} <text wx:if="{{!item.isCheckIn}}" data-item="item"
+            <text>{{index + 1}} </text> <text  class="p-name"  bindtap="handleOpenPrizeModal" data-item="{{item}}">{{item.name}}</text> <text
+            class="p-submit" wx:if="{{!item.isCheckIn && item.type === 1}}" data-item="item"
               bindtap="handleChangeToSubmitModal">提交资料</text>
           </view>
         </view>
