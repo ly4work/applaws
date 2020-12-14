@@ -173,13 +173,13 @@ image {
   z-index: 40;
   width: 524rpx;
   height: 596rpx;
-  top: 200rpx;
+  /* top: 200rpx; */
   /* background: yellow; */
   left: 0;
   right: 0;
   margin: 0 auto;
   transform: translateY(-50%);
-  top: 50%;
+  top: 40%;
 }
 
 .ps-layers.ps-layers-1 {
@@ -400,13 +400,13 @@ image {
   width: 100%;
   height: 176rpx;
   z-index: 45;
-  top: 597rpx;
+  top: calc(40% + 97rpx);
   left: 10rpx;
-  top: calc(50% + 77rpx);
 }
 
 .cat-layers.cat-layers-1 {
   /* top: 614rpx; */
+  top: calc(40% + 77rpx);
 }
 
 .cat-layers .cat_buou {

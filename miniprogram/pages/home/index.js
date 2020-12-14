@@ -149,7 +149,7 @@ Page({
     openId: '',
     gender: 'male',
     glass: 'no-glass',
-    faceId: 'no-glass-female-7',
+    faceId: '',
     cardId: '',
     cloudStorageId: '7465-test-7gniicn9893dca9d-1304476931',
     bgMusicPlayStatus: true,
@@ -415,7 +415,15 @@ Page({
   //结束录音
   shutRecording: function () {
     var that = this;
-
+    //  录音上传完后才能到下一步试听
+    this.handleNext()
+    wx.showLoading({
+      title: '正在生成...',
+    })
+    // 无论多长时间都要在5秒左右的时候隐藏loading
+    setTimeout(() => {
+      wx.hideLoading()
+    }, 5000);
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -447,8 +455,8 @@ Page({
             soundUrl: `https://${that.data.cloudStorageId}.tcb.qcloud.la/sounds${this.midstr(res.fileID)}`
             // time: util.formatTime1(new Date())
           })
-          //  录音上传完后才能到下一步试听
-          this.handleNext()
+          wx.hideLoading()
+
         },
       })
     })

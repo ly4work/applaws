@@ -43,6 +43,23 @@
     <view class="weather-layer">
       <image class="wt" src="./../../images/home/weather/w_{{shareInfo.weatherId}}.png" mode="scaleToFill"></image>
       <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-container">
+        <view class="snow foreground">
+          <image src="./../../images/home/snow-foreground.png"></image>
+        </view>
+        <view class="snow foreground layered"></view>
+        <view class="snow middleground">
+          <image src="./../../images/home/snow-tiny.png"></image>
+        </view>
+        <view class="snow middleground layered"></view>
+        <view class="snow background">
+          <image src="./../../images/home/snow-large.png"></image>
+        </view>
+        <view class="snow background layered"></view>
+      </view>
     </view>
 
     <!-- 贴图层 -->
@@ -126,9 +143,9 @@
         </image>
       </view>
       <image class="decoration decoration-2 static-decor"
-          src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/水晶球装饰灯.gif"
-          mode="scaleToFill">
-        </image>
+        src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/水晶球装饰灯.gif"
+        mode="scaleToFill">
+      </image>
       <!-- 服装dress图层 -->
       <view class="dress-layer">
         <!-- <image class="hat hat-2" src="./../../images/home/dress/2_hat.png"
@@ -173,6 +190,23 @@
     <view class="weather-layer">
       <image class="wt" src="./../../images/home/weather/w_{{currentWeatherId}}.png" mode="scaleToFill"></image>
       <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-container">
+        <view class="snow foreground">
+          <image src="./../../images/home/snow-foreground.png"></image>
+        </view>
+        <view class="snow foreground layered"></view>
+        <view class="snow middleground">
+          <image src="./../../images/home/snow-tiny.png"></image>
+        </view>
+        <view class="snow middleground layered"></view>
+        <view class="snow background">
+          <image src="./../../images/home/snow-large.png"></image>
+        </view>
+        <view class="snow background layered"></view>
+      </view>
     </view>
 
     <!-- 贴图层 -->
