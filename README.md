@@ -5,8 +5,9 @@
 * [ ] prod
 
 #### 1.1 Cloud Serverless函数设计
-   * [ ] 录音文件上传云存储
+   * [x] 录音文件上传云存储
    * [ ] 查询活动是否结束
+   * [x] 百度人脸识别
 
 #### 1.2 Cloud DB表设计
 * [x] 用户 user_list
@@ -62,7 +63,7 @@
 |  type   |  奖品类型  |  int    |
 |  name   |  奖品名称  |  string    |
 |  command   |  虚拟奖品口令  |  string    |
-|  isCheckIn   |  实物奖品是否登记过地址信息  |  string    |
+|  isCheckIn   |  实物奖品是否登记过地址信息  |  boolean    |
 |  userName   |  实物奖品登记姓名  |  string    |
 |  userPhone   |  实物奖品登记电话  |  string    |
 |  userAddress   |  实物奖品登记地址  |  string    |
@@ -70,8 +71,41 @@
 
 ## 2. 前端设计
 #### 2.1 页面拆分
+> **状态机status**
+
+- [x] 主页面
+    **发送者视角**
+    - [x] 0 - Loading 页面资源加载中
+    - [x] 1 - Init 初始状态
+    - [x] 2 - Style 选择服饰、背景
+    - [x] 3 - StartRecord 开始录音
+    - [x] 4 - Recording 录音中
+    - [x] 5 - StopRecoding 录音结束
+    - [x] 6 - Packaged 贺卡打包中loading
+    - [x] 7 - Complete 贺卡制作结束
+    
+    **接收者视角**
+    - [x] 8 - Received 打开分享的页面
+    
+- [x] 抽奖页
+
 #### 2.2 模态框拆分
+- [x] 活动介绍
+- [x] 虚拟奖品获得
+- [x] 实物奖品获得
+- [x] 实物奖品填写兑换信息
+- [x] 我的奖品
+- [x] 分享遮罩
+
 #### 2.3 动效
+
+- [x] 首页加载和打包loading动效
+- [x] 背景音频icon动效
+- [x] 录音中动画
+- [x] 录音完成试听动画
+- [x] 完成后听录音动画
+- [x] 抽奖转盘动画
+
 
 ## 3. 发布部署
 #### 3.1 小程序账号申请
@@ -79,6 +113,7 @@
 - [x] 小程序资料初始配置，包含名称、简称、头像、介绍、服务类目
 
 #### 3.2 初版审核
+
 
 
 ## sql执行脚本 
