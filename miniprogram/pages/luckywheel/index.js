@@ -131,9 +131,9 @@ Page({
       success: function (res) {
         wx.getClipboardData({
           success: function (res) {
-            // wx.showToast({
-            //   title: '口令复制成功'
-            // })
+            wx.showToast({
+              title: '口令复制成功'
+            })
           }
         })
       }
@@ -359,6 +359,7 @@ Page({
     return {
       title: 'Applaws圣诞把“爱”说出来，有好礼！有惊喜！录制语音祝福，定制只属于您的心愿水晶球！',
       path: '/pages/home/index',
+      // imgUrl: 'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/WechatIMG58.png',
       success: function (res) {
         // 转发成功
       },
