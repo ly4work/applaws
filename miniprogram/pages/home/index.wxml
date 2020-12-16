@@ -25,9 +25,11 @@
 
   <!-- 背景音乐layer 顶层layer -->
   <view class="music-layer" bindtap="handleCheckBgMusicStatus">
-    <image wx-if="{{bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}" src="./../../images/home/music-icon.png">
+    <image wx-if="{{bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}"
+      src="./../../images/home/music-icon.png">
     </image>
-    <image wx-if="{{!bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}" src="./../../images/home/jingyin.png">
+    <image wx-if="{{!bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}"
+      src="./../../images/home/jingyin.png">
     </image>
   </view>
 
@@ -48,7 +50,10 @@
       <image class="static-star"
         src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
         mode="scaleToFill"></image>
-      <view class="snow-container">
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
+      <!-- <view class="snow-container">
         <view class="snow foreground">
           <image src="./../../images/home/snow-foreground.png"></image>
         </view>
@@ -61,7 +66,7 @@
           <image src="./../../images/home/snow-large.png"></image>
         </view>
         <view class="snow background layered"></view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 贴图层 -->
@@ -121,7 +126,10 @@
       <image class="static-star"
         src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
         mode="scaleToFill"></image>
-      <view class="snow-container">
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
+      <!-- <view class="snow-container">
         <view class="snow foreground">
           <image src="./../../images/home/snow-foreground.png"></image>
         </view>
@@ -134,7 +142,7 @@
           <image src="./../../images/home/snow-large.png"></image>
         </view>
         <view class="snow background layered"></view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 贴图层 -->
@@ -183,8 +191,8 @@
       <view class="s-l-box">
         <image wx:if="{{status === 1}}" class="slogan1" src="./../../images/home/slogan-1.png"></image>
         <image wx:if="{{status === 1}}" class="slogan2" src="./../../images/home/slogan-2.png"></image>
-        <image wx:if="{{status === 2}}" class="slogan1 sm" src="./../../images/home/slogan-1.png"></image>
-        <image wx:if="{{status === 2}}" class="slogan3" src="./../../images/home/slogan-3.png"></image>
+        <image wx:if="{{status === 2 || status === 7}}" class="slogan1 sm" src="./../../images/home/slogan-1.png"></image>
+        <image wx:if="{{status === 2 || status === 7}}" class="slogan3" src="./../../images/home/slogan-3.png"></image>
       </view>
     </view>
 
@@ -195,7 +203,10 @@
       <image class="static-star"
         src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
         mode="scaleToFill"></image>
-      <view class="snow-container">
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
+      <!-- <view class="snow-container">
         <view class="snow foreground">
           <image src="./../../images/home/snow-foreground.png"></image>
         </view>
@@ -208,7 +219,7 @@
           <image src="./../../images/home/snow-large.png"></image>
         </view>
         <view class="snow background layered"></view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 贴图层 -->
@@ -294,7 +305,7 @@
         <view class="btn2 btn-prev" bindtap="handlePrev">
           <image src="./../../images/home/buttons/prev.png"></image>
         </view>
-        <view class="btn2 btn-next" bindtap="handleNext">
+        <view class="btn2 btn-next" bindtap="handleChangeSkin">
           <image src="./../../images/home/buttons/next.png"></image>
         </view>
       </view>
@@ -361,7 +372,7 @@
 
     <!-- status: 7 -->
     <view class="sts7" wx:if="{{status === 7}}">
-      <view class="radio-bar" bindtap="recordingAndPlaying">
+      <view class="radio-bar" bindtap="recordingAndPlaying" wx:if="{{CurrentDate >= Door}}">
         <image src="./../../images/home/complete.png"></image>
       </view>
       <view class="btn-group">
@@ -381,7 +392,7 @@
 
     <!-- status: 8 -->
     <view class="sts8" wx:if="{{status === 8}}">
-      <view class="radio-bar" bindtap="listenToShareRecord">
+      <view class="radio-bar" bindtap="listenToShareRecord"  wx:if="{{CurrentDate >= Door}}">
         <image src="./../../images/home/complete.png"></image>
       </view>
       <view class="btn-group">
@@ -405,7 +416,7 @@
         <image src="./../../images/home/buttons/close.png"></image>
       </view>
       <view class="content">
-        <image src="./../../images/home/modal/modal-activity.png"></image>
+        <image src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/modal-activity.png"></image>
       </view>
     </view>
   </view>

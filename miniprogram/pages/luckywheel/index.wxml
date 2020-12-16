@@ -6,18 +6,26 @@
 
     <!-- 天气图层 -->
     <view class="weather-layer">
-      <image src="./../../images/home/weather/1.png" mode="scaleToFill"></image>
+      <image class="wt" src="./../../images/home/weather/w_1.png" mode="scaleToFill"></image>
+      <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
     </view>
   </view>
 
   <!-- 规则button -->
-  <view class="rules-layer"  bindtap="handleCheckRuleModal">
+  <view class="rules-layer" bindtap="handleCheckRuleModal">
     活动规则
   </view>
   <!-- 转盘区域 -->
   <view class="wheel-layer">
     <view class="wheel">
-      <image src="./../../images/luckywheel/wheel.png" mode="scaleToFill"></image>
+      <image src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/wheel.png"
+        mode="scaleToFill"></image>
     </view>
     <view class="lucky">
       <view class="base-pointer" bindtap="start">
@@ -51,7 +59,9 @@
       <view class="content">
         <image src="./../../images/home/modal/rweta.png"></image>
         <view class="prize-info">
-          <image src="./../../images/home/modal/type1.png"></image>
+          <image
+            src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/type{{currentPrize.level}}.png">
+          </image>
         </view>
         <view class="prize-button command" wx:if="{{currentPrize.type === 2}}" bindtap='copyText'
           data-text="{{currentPrize.command}}">
@@ -109,14 +119,15 @@
           <image src="./../../images/home/buttons/close.png"></image>
         </view>
         <image src="./../../images/home/modal/exchange.png"></image>
-        <view class="list">
+        <scroll-view class="list scroll-list" scroll-y="true" bindscroll="scroll" style="width: 100%">
           <view class="header">我的奖品</view>
           <view class="cell" wx:for="{{myGiftList}}" wx:key="prizeId">
-            <text>{{index + 1}} </text> <text  class="p-name"  bindtap="handleOpenPrizeModal" data-item="{{item}}">{{item.name}}</text> <text
-            class="p-submit" wx:if="{{!item.isCheckIn && item.type === 1}}" data-item="item"
+            <text>{{index + 1}} </text> <text class="p-name" bindtap="handleOpenPrizeModal"
+              data-item="{{item}}">{{item.name}}</text> <text class="p-submit"
+              wx:if="{{!item.isCheckIn && item.type === 1}}" data-item="item"
               bindtap="handleChangeToSubmitModal">提交资料</text>
           </view>
-        </view>
+        </scroll-view>
 
       </view>
     </view>
@@ -128,7 +139,8 @@
         <image src="./../../images/home/buttons/close.png"></image>
       </view>
       <view class="content">
-        <image src="./../../images/home/modal/modal-activity.png"></image>
+        <image src="cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/modal-activity.png">
+        </image>
       </view>
     </view>
   </view>

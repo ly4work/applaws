@@ -22,9 +22,10 @@ Page({
    */
   data: {
     animationData: {}, //初始动画数据
-    Prize: [270, 180, 225], //225度三等奖，180度二等奖，270度一等奖
+    Prize: [180, 90, 270, 225], //180度特等奖, 90度一等奖, 270度二等奖，225度三等奖，
     flag: false,
     gifts: [],
+    giftStockMap: {},
     openId: '',
     modalStatusMap: {
       reward: false,
@@ -40,6 +41,7 @@ Page({
   },
   start: async function () {
     //  先查询用户当前这一天，是否抽过奖
+    const ts = format()
     const userInfoRes = await db.collection('user_list').where({
       openId: this.data.openId
     }).get()
@@ -56,9 +58,55 @@ Page({
       })
     } else {
       const luckyGift = this.handleRandom()
+      if (!luckyGift) {
+        await db.collection('user_list').doc(userInfo._id).update({
+          data: {
+            [key]: 1
+          }
+        })
+        wx.showToast({
+          title: '谢谢参与！',
+          icon: 'none'
+        })
+        return void 0;
+      }
       const time = new Date().toLocaleDateString()
       //  将奖品插入user_list， 和prize_list
       console.log(luckyGift)
+      //  库存 - 1
+      console.log(`${luckyGift.level}.${ts}`, (this.data.giftStockMap[luckyGift.level][ts] || 1) - 1)
+
+      const newData = {
+        [`${luckyGift.level}.${ts}`]: (this.data.giftStockMap[luckyGift.level][ts] || 1) - 1
+      }
+      console.log(123, newData)
+
+      await wx.cloud.callFunction({
+        name: 'echo',
+        data: {
+          key: `${luckyGift.level}.${ts}`,
+          value: (this.data.giftStockMap[luckyGift.level][ts] || 1) - 1
+        },
+        success: async res => {
+          const giftStockRes = await db.collection('gift_stock_list').get()
+          this.setData({
+            giftStockMap: giftStockRes.data[0]
+          })
+          console.log('new giftStockMap::::', giftStockRes.data[0])
+        },
+        fail: err => {
+          console.log(err)
+        }
+      })
+
+
+      // const stockRes = await db.collection('gift_stock_list').where({
+      //   stockId: '1'
+      // }).update({
+      //   data: {
+      //     '1.20201216': 18
+      //   }
+      // })
       //  先插入prize_list，返回prizeId
       const res = await db.collection('prize_list').add({
         data: {
@@ -67,6 +115,7 @@ Page({
           time,
           type: luckyGift.type,
           name: luckyGift.name,
+          level: luckyGift.level,
           command: luckyGift.command || '',
           isCheckIn: false,
           userName: '',
@@ -84,6 +133,7 @@ Page({
         time,
         type: luckyGift.type,
         name: luckyGift.name,
+        level: luckyGift.level,
         command: luckyGift.command || '',
         isCheckIn: false,
         userName: '',
@@ -104,7 +154,7 @@ Page({
         duration: 5000,
         timingFunction: 'ease-in-out'
       })
-      animation.rotate(360 * 10 + this.data.Prize[luckyGift.level - 1]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
+      animation.rotate(360 * 10 + this.data.Prize[luckyGift.level]).step() //因为公司项目转盘分为8个区域，所以每个区域就是45°了.先设置必定转3圈，然后加上后台返回来的标识，假设这个是安慰奖，随意，这个旋转最后就是到45度这个位置。
       this.setData({
         currentPrize: newPrize,
         animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
@@ -161,16 +211,24 @@ Page({
   // 点击我的奖品-虚拟奖品 弹出奖品详情框
   handleOpenPrizeModal: function (e) {
     const item = e.currentTarget.dataset.item
-    if (item.type === 2)
+    console.log(item)
+    if (item.type === 2) {
       this.setData({
         currentPrize: item,
-        modalStatusMap: {
-          mygift: false,
-          exchange: false,
-          rule: false,
-          reward: true
-        }
       })
+      setTimeout(() => {
+        console.log(this.data.currentPrize)
+        this.setData({
+          modalStatusMap: {
+            mygift: false,
+            exchange: false,
+            rule: false,
+            reward: true
+          }
+        })
+      }, 100);
+    }
+
   },
   //  切换我的奖品modal
   handleCheckMygiftModal: function () {
@@ -185,7 +243,7 @@ Page({
         const queryUserRes = await db.collection('user_list').where({
           openId: this.data.openId
         }).get()
-        const userInfo = queryUserRes.data[0]
+        const userInfo = queryUserRes.data[0] || {}
         const prizeList = userInfo.prizeList
         console.log(prizeList)
         this.setData({
@@ -267,21 +325,43 @@ Page({
   },
   // 中奖函数
   handleRandom: function () {
-    const max = 1000
+    const max = 100
     const min = 1
     const num = parseInt(Math.random() * (max - min + 1) + min)
     let probability = 0
-    //  一等奖 全年爱普士猫罐头一箱锦鲤大奖（0.5%）
-    if (num >= 1 && num <= 5) {
-      probability = 5
-    } else if (num >= 6 && num <= 15) {
-      // 二等奖 爱普士圣诞礼包 鱼柳肉条*5（1%）
-      probability = 10
-    } else {
-      //   三等奖 爱普士天猫期舰店优惠券10元（100%）
-      probability = 985
+    const lvl0 = this.data.gifts[3].probability
+    const lvl1 = this.data.gifts[2].probability
+    const lvl2 = this.data.gifts[1].probability
+    const lvl3 = this.data.gifts[0].probability
+    const giftStockMap = this.data.giftStockMap
+    console.log('giftStockMap:::', num)
+    const ts = format()
+    const specialDate1 = '20201225'
+    const specialDate2 = '20201231'
+
+    //  特等奖 48盒*60克无谷餐盒（随机口味）5% 20201225 20201231
+    //  必须满足 当天有库存，且时间为1225 1231两天
+    if ((ts === specialDate1 || ts === specialDate2) && giftStockMap['0'][ts] >= 1 && num >= 1 && num <= lvl0) {
+      return this.data.gifts[3]
     }
-    return this.data.gifts.find((item) => item.probability === (probability / 10))
+    //  一等奖 爱普士天猫旗舰店五折券（5%）
+    else if (giftStockMap['1'][ts] >= 1 && num >= lvl0 + 1 && num <= lvl0 + lvl1) {
+      return this.data.gifts[2]
+    }
+    // 二等奖 85克的新西兰猫罐*5（随机口味）(10%)
+    else if (giftStockMap['2'][ts] >= 1 && num >= lvl0 + lvl1 + 1 && num <= (lvl0 + lvl1 + lvl2)) {
+      // probability = 10
+      return this.data.gifts[1]
+    } else if (giftStockMap['3'][ts] >= 1 && num >= lvl0 + lvl1 + lvl2 + 1 && num <= (lvl0 + lvl1 + lvl2 + lvl3)) {
+      //   三等奖 爱普士天猫旗舰店七五折券（100%）
+      // probability = 985
+      return this.data.gifts[0]
+    } else {
+      return null
+    }
+    return
+    // console.log(this.data.gifts, probability / 10)
+    // return this.data.gifts.find((item) => item.probability === (probability / 10))
   },
   /**
    * 生命周期函数--监听页面加载
@@ -292,8 +372,10 @@ Page({
     //   title: JSON.stringify(options),
     // })
     const res = await db.collection('gift_list').get()
+    const giftStockRes = await db.collection('gift_stock_list').get()
     this.setData({
-      gifts: res.data
+      gifts: res.data,
+      giftStockMap: giftStockRes.data[0]
     })
 
     wx.cloud.callFunction({

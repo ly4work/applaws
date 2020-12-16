@@ -1,5 +1,6 @@
 // miniprogram/pages/home/index.js
 import Utils from './../../utils/index'
+const Door = 15
 
 //  录音实例
 const recorderManager = wx.getRecorderManager()
@@ -7,7 +8,7 @@ const recorderManager = wx.getRecorderManager()
 const backgroundAudioManager = wx.getBackgroundAudioManager()
 // 添加音效
 const innerAudioContext = wx.createInnerAudioContext()
-innerAudioContext.autoplay = true // 是否自动开始播放，默认为 false
+innerAudioContext.autoplay = new Date().getDate() >= Door // 是否自动开始播放，12月18日开始，自动播放
 innerAudioContext.loop = true // 是否循环播放，默认为 false
 wx.setInnerAudioOption({ // ios在静音状态下能够正常播放音效
   obeyMuteSwitch: false, // 是否遵循系统静音开关，默认为 true。当此参数为 false 时，即使用户打开了静音开关，也能继续发出声音。
@@ -111,10 +112,13 @@ const cacheImageList = [
   './../../images/home/dress/5_footer.png',
   './../../images/home/dress/5_body.png',
   './../../images/home/dress/5_active.png',
-  './../../images/home/modal/modal-activity.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/modal-activity.png',
   './../../images/home/modal/rweta.png',
   './../../images/home/modal/exchange.png',
-  './../../images/home/modal/type1.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/type0.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/type1.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/type2.png',
+  'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/type3.png',
   'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/loading.gif',
   'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/人物头.gif',
   'cloud://test-7gniicn9893dca9d.7465-test-7gniicn9893dca9d-1304476931/static-imgs/布偶.gif',
@@ -138,6 +142,8 @@ Page({
     // 6 - Packaged 贺卡打包中loading
     // 7 - Complete 贺卡制作结束
     // 8 - Received 打开分享的页面
+    Door,
+    CurrentDate: new Date().getDate(),
     cacheImageList,
     animationData: {},
     status: 0,
@@ -147,7 +153,7 @@ Page({
     faceId: '',
     cardId: '',
     cloudStorageId: '7465-test-7gniicn9893dca9d-1304476931',
-    bgMusicPlayStatus: true,
+    bgMusicPlayStatus: new Date().getDate() >= Door,
     currentStatus2Tab: 0,
     fromShare: false,
     shareInfo: {
@@ -263,13 +269,35 @@ Page({
   // 开始制作
   handleStartCreate: function () {
     const that = this
-    this.handleChooseFace(() => {
-      that.handleNext()
-      innerAudioContext.play()
-      this.setData({
-        bgMusicPlayStatus: true
+    //  18号前不要开启上传照片人脸识别
+    if (this.data.CurrentDate < Door) {
+      const _faceId = randomId(1, 10)
+      that.setData({
+        gender: 'male',
+        glass: 'no-glass',
+        faceId: `no-glass-male-${_faceId}`
+      }, () => {
+        that.handleNext()
       })
-    })
+    } else {
+      this.handleChooseFace(() => {
+        that.handleNext()
+        innerAudioContext.play()
+        this.setData({
+          bgMusicPlayStatus: true
+        })
+      })
+    }
+
+  },
+  //  换皮肤的下一步
+  handleChangeSkin: function () {
+    //  18号前不要开启录音
+    if (this.data.CurrentDate < Door) {
+      this.handleSubmit()
+    } else {
+      this.handleNext()
+    }
   },
   //  下一步
   handleNext: function () {
@@ -577,14 +605,14 @@ Page({
       self.setData({
         preLoadProgressPercent: 0
       })
-      let animation = wx.createAnimation({ //创建动画实例
-        duration: 500,
-        timingFunction: 'ease'
-      })
-      animation.opacity(0).step()
-      this.setData({
-        animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
-      })
+      // let animation = wx.createAnimation({ //创建动画实例
+      //   duration: 500,
+      //   timingFunction: 'ease'
+      // })
+      // animation.opacity(0).step()
+      // this.setData({
+      //   animationData: animation.export() //最后根据小程序文档说，这个参数需要export输出。
+      // })
       self.setData({
         status: 7
       })
