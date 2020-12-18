@@ -1,0 +1,10 @@
+var toFixed2 = function (n) {
+  return (typeof n === 'number' || typeof Number(n) === 'number') && Math.floor(n * 10000) / 10000 * 100 + '%'
+}
+var toUpperWord = function (w) {
+  return typeof w === 'string' && w.toLocaleUpperCase()
+}
+module.exports = {
+  toFixed2: toFixed2,
+  toUpperWord: toUpperWord
+}

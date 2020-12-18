@@ -1,0 +1,432 @@
+<!--miniprogram/pages/home/index.wxml-->
+<view>
+  <view class="loading-files" wx:show="{{status === 0}}">
+    <image wx:for="{{cacheImageList}}" src="{{item}}" data-index="{{index}}" data-item="{{item}}" wx:key="index"
+      bindload="handleLoadImage">
+    </image>
+  </view>
+  <!-- status:0 | 7 加载动画区域 顶层layer-->
+  <view class="loading-layer" wx:if="{{status === 0 || status === 6}}" animation="{{animationData}}">
+    <view class="design">
+      <view class="logo">
+        <image src="./../../images/home/slogan-1.png"></image>
+      </view>
+      <view class="bell zy-bell ">
+        <image src="./../../images/home/bell.png"></image>
+      </view>
+    </view>
+    <view class="loading-bar">
+      <view class="progress" style="width: {{preLoadProgressPercent}}%"></view>
+    </view>
+    <view class="loading-txt">
+      {{status === 0 ? '正在加载' : '打包中'}}...
+    </view>
+  </view>
+
+  <!-- 背景音乐layer 顶层layer -->
+  <view class="music-layer" bindtap="handleCheckBgMusicStatus">
+    <image wx-if="{{bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}"
+      src="./../../images/home/music-icon.png">
+    </image>
+    <image wx-if="{{!bgMusicPlayStatus}}" class="icon-music {{bgMusicPlayStatus ? 'rotate' : ''}}"
+      src="./../../images/home/jingyin.png">
+    </image>
+  </view>
+
+  <!-- 分享打开 主图层区域 -->
+  <view class="layer" wx-if="{{status === 8 && shareInfo._id}}">
+    <!-- slogan图层 -->
+    <view class="slogan-layer">
+      <view class="s-l-box">
+        <image class="slogan1 sm" src="./../../images/home/slogan-1.png"></image>
+        <image class="slogan4" src="./../../images/home/slogan-4.png"></image>
+      </view>
+    </view>
+
+    <!-- 天气weather图层 -->
+    <view class="weather-layer">
+      <image class="wt" src="./../../images/home/weather/w_{{shareInfo.weatherId}}.png" mode="scaleToFill"></image>
+      <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
+      <!-- <view class="snow-container">
+        <view class="snow foreground">
+          <image src="./../../images/home/snow-foreground.png"></image>
+        </view>
+        <view class="snow foreground layered"></view>
+        <view class="snow middleground">
+          <image src="./../../images/home/snow-tiny.png"></image>
+        </view>
+        <view class="snow middleground layered"></view>
+        <view class="snow background">
+          <image src="./../../images/home/snow-large.png"></image>
+        </view>
+        <view class="snow background layered"></view>
+      </view> -->
+    </view>
+
+    <!-- 贴图层 -->
+    <view class="ps-layers">
+      <!-- 主体background背景图层 -->
+      <view class="background-layer background-{{shareInfo.backgroundId}}">
+        <image class="wt" src="./../../images/home/background/{{shareInfo.backgroundId}}_box.png" mode="scaleToFill">
+        </image>
+      </view>
+      <!-- 服装dress图层 -->
+      <view class="dress-layer">
+        <image class="hat hat-{{shareInfo.dressId}}" src="./../../images/home/dress/{{shareInfo.dressId}}_hat.png"
+          mode="scaleToFill"></image>
+        <image class="body body-{{shareInfo.dressId}}" src="./../../images/home/dress/{{shareInfo.dressId}}_body.png"
+          mode="scaleToFill"></image>
+        <image class="footer footer-{{shareInfo.dressId}}"
+          src="./../../images/home/dress/{{shareInfo.dressId}}_footer.png" mode="scaleToFill"></image>
+        <image wx-if="{{(shareInfo.dressId === '2' || shareInfo.dressId === '4') && shareInfo.backgroundId !== '2'}}"
+          class="decoration decoration-{{shareInfo.dressId}}"
+          src="./../../images/home/dress/{{shareInfo.dressId}}_decoration.png" mode="scaleToFill"></image>
+      </view>
+      <!-- 人脸face图层 -->
+      <view class="face-layer face-{{shareInfo.faceId}} face-dress-{{shareInfo.dressId}}">
+        <image src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/face/{{shareInfo.faceId}}.png"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+
+    <!-- 布偶猫 -->
+    <view class="cat-layers cat-layers-8">
+      <!-- <view class="cat_buou">
+        <image class="land" src="./../../images/home/cat_buou.png" mode="scaleToFill"></image>
+      </view> -->
+      <view class="cat_yingduan">
+        <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
+      </view>
+      <view class="caidai" wx-if="{{shareInfo.backgroundId !== '1'}}">
+        <image class="land" src="./../../images/home/caidai.png" mode="scaleToFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 应用首页 主图层区域 -->
+  <view class="layer layer-1" wx-if="{{status === 1}}">
+    <!-- slogan图层 -->
+    <view class="slogan-layer">
+      <view class="s-l-box">
+        <image class="slogan1" src="./../../images/home/slogan-1.png"></image>
+        <image class="slogan2" src="./../../images/home/slogan-2.png"></image>
+      </view>
+    </view>
+
+    <!-- 天气weather图层 -->
+    <view class="weather-layer">
+      <image class="wt" src="./../../images/home/weather/w_1.png" mode="scaleToFill"></image>
+      <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
+      <!-- <view class="snow-container">
+        <view class="snow foreground">
+          <image src="./../../images/home/snow-foreground.png"></image>
+        </view>
+        <view class="snow foreground layered"></view>
+        <view class="snow middleground">
+          <image src="./../../images/home/snow-tiny.png"></image>
+        </view>
+        <view class="snow middleground layered"></view>
+        <view class="snow background">
+          <image src="./../../images/home/snow-large.png"></image>
+        </view>
+        <view class="snow background layered"></view>
+      </view> -->
+    </view>
+
+    <!-- 贴图层 -->
+    <view class="ps-layers ps-layers-1">
+      <!-- 主体background背景图层 -->
+      <view class="background-layer background-1">
+        <image class="wt" src="./../../images/home/background/1_box.png" mode="scaleToFill">
+        </image>
+      </view>
+      <image class="decoration decoration-2 static-decor"
+        src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/水晶球装饰灯.gif"
+        mode="scaleToFill">
+      </image>
+      <!-- 服装dress图层 -->
+      <view class="dress-layer">
+        <!-- <image class="hat hat-2" src="./../../images/home/dress/2_hat.png"
+          mode="scaleToFill"></image> -->
+        <image class="body body-2" src="./../../images/home/dress/2_body.png" mode="scaleToFill"></image>
+        <image class="footer footer-2" src="./../../images/home/dress/2_footer.png" mode="scaleToFill"></image>
+
+      </view>
+      <!-- 人脸face图层 -->
+      <view class="face-layer static-face">
+        <image src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/人物头.gif"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+
+    <!-- 布偶猫 -->
+    <view class="cat-layers cat-layers-1">
+      <!-- <view class="cat_buou static-buou">
+        <image class="land" src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/布偶.gif"
+          mode="scaleToFill"></image>
+      </view> -->
+      <view class="cat_yingduan static-yingduan">
+        <image class="land" src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/蓝猫.gif"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 制作图层 主图层区域 -->
+  <view class="layer" wx-if="{{status !== 8 && status !== 1}}">
+    <!-- slogan图层 -->
+    <view class="slogan-layer">
+      <view class="s-l-box">
+        <image wx:if="{{status === 1}}" class="slogan1" src="./../../images/home/slogan-1.png"></image>
+        <image wx:if="{{status === 1}}" class="slogan2" src="./../../images/home/slogan-2.png"></image>
+        <image wx:if="{{status === 2 || status === 7}}" class="slogan1 sm" src="./../../images/home/slogan-1.png"></image>
+        <image wx:if="{{status === 2}}" class="slogan3" src="./../../images/home/slogan-3.png"></image>
+        <image wx:if="{{status === 7}}" class="slogan4" src="./../../images/home/slogan-4.png"></image>
+      </view>
+    </view>
+
+    <!-- 天气weather图层 -->
+    <view class="weather-layer">
+      <image class="wt" src="./../../images/home/weather/w_{{currentWeatherId}}.png" mode="scaleToFill"></image>
+      <image class="land" src="./../../images/home/weather/snow.png" mode="scaleToFill"></image>
+      <image class="static-star"
+        src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/树五角星.gif"
+        mode="scaleToFill"></image>
+      <view class="snow-new">
+        <image src="./../../images/home/weather/snow-static.png"></image>
+      </view>
+      <!-- <view class="snow-container">
+        <view class="snow foreground">
+          <image src="./../../images/home/snow-foreground.png"></image>
+        </view>
+        <view class="snow foreground layered"></view>
+        <view class="snow middleground">
+          <image src="./../../images/home/snow-tiny.png"></image>
+        </view>
+        <view class="snow middleground layered"></view>
+        <view class="snow background">
+          <image src="./../../images/home/snow-large.png"></image>
+        </view>
+        <view class="snow background layered"></view>
+      </view> -->
+    </view>
+
+    <!-- 贴图层 -->
+    <view class="ps-layers ps-layers-{{status}}">
+      <!-- 主体background背景图层 -->
+      <view class="background-layer background-{{currentBackgroundTab.id}}">
+        <image class="wt" src="./../../images/home/background/{{currentBackgroundTab.id}}_box.png" mode="scaleToFill">
+        </image>
+      </view>
+      <!-- 服装dress图层 -->
+      <view class="dress-layer">
+        <image class="hat hat-{{currentDressTab.id}}" src="./../../images/home/dress/{{currentDressTab.id}}_hat.png"
+          mode="scaleToFill"></image>
+        <image class="body body-{{currentDressTab.id}}" src="./../../images/home/dress/{{currentDressTab.id}}_body.png"
+          mode="scaleToFill"></image>
+        <image class="footer footer-{{currentDressTab.id}}"
+          src="./../../images/home/dress/{{currentDressTab.id}}_footer.png" mode="scaleToFill"></image>
+        <image wx-if="{{(currentDressTab.id === '2' || currentDressTab.id === '4') && currentBackgroundTab.id !== '2'}}"
+          class="decoration decoration-{{currentDressTab.id}}"
+          src="./../../images/home/dress/{{currentDressTab.id}}_decoration.png" mode="scaleToFill"></image>
+      </view>
+      <!-- 人脸face图层 -->
+      <view class="face-layer face-{{faceId}} face-dress-{{currentDressTab.id}}">
+        <image src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/face/{{faceId}}.png"
+          mode="scaleToFill"></image>
+      </view>
+    </view>
+
+    <!-- 布偶猫 -->
+    <view class="cat-layers cat-layers-{{status}}">
+      <!-- <view class="cat_buou">
+        <image class="land" src="./../../images/home/cat_buou.png" mode="scaleToFill"></image>
+      </view> -->
+      <view class="cat_yingduan">
+        <image class="land" src="./../../images/home/cat_yingduan.png" mode="scaleToFill"></image>
+      </view>
+      <view class="caidai" wx-if="{{currentBackgroundTab.id !== '1'}}">
+        <image class="land" src="./../../images/home/caidai.png" mode="scaleToFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户操作区域 -->
+  <view class="operation ope-{{status}}">
+    <!-- status: 1 -->
+    <view class="sts1" wx:if="{{status === 1}}">
+      <view class="btn1 btn-start" bindtap="handleStartCreate">
+        <image src="./../../images/home/buttons/start.png"></image>
+      </view>
+      <view class="btn1 btn-intro" bindtap="handleCheckActivityModal">
+        <image src="./../../images/home/buttons/intro.png"></image>
+      </view>
+    </view>
+    <!-- status: 2 -->
+    <view class="sts2" wx:if="{{status === 2}}">
+      <view class="tabs">
+        <view class="tab {{index === currentStatus2Tab ? 'active' : ''}}" wx:for="{{status2Tabs}}"
+          data-index="{{index}}" bindtap="handleCheckStatus2Tab" wx:key="index">
+          <view class="txt" data-index="{{index}}">{{item.title}}</view>
+        </view>
+      </view>
+      <view class="cabinet">
+        <image class="cab-bg" src="./../../images/home/cabinet.png"></image>
+        <view class="boxlist dress-list list1" wx-if="{{currentStatus2Tab === 0}}">
+          <view class="cell" wx:for="{{dressList}}" data-index="{{index}}" bindtap="handleCheckDressTab"
+            data-item="{{item}}" wx:key="id">
+            <image
+              src="./../../images/home/dress/{{(index + 1) + (currentDressTab.id === item.id ? '_active' : '')}}.png">
+            </image>
+          </view>
+        </view>
+
+        <view class="boxlist background-list list2" wx-if="{{currentStatus2Tab === 1}}">
+          <view class="cell" wx:for="{{backgroundList}}" data-index="{{index}}" bindtap="handleCheckBackgroundTab"
+            data-item="{{item}}" wx:key="id">
+            <image
+              src="./../../images/home/background/{{(index + 1) + (currentBackgroundTab.id === item.id ? '_active' : '')}}.png">
+            </image>
+          </view>
+        </view>
+      </view>
+      <view class="btn-group">
+        <view class="btn2 btn-prev" bindtap="handlePrev">
+          <image src="./../../images/home/buttons/prev.png"></image>
+        </view>
+        <view class="btn2 btn-next" bindtap="handleChangeSkin">
+          <image src="./../../images/home/buttons/next.png"></image>
+        </view>
+      </view>
+
+    </view>
+    <!-- status: 3 4 5-->
+    <view class="sts345" wx:if="{{status >= 3 && status <= 5}}">
+      <view class="cabinet">
+        <image class="cab-bg" src="./../../images/home/cabinet.png"></image>
+        <view class="record-box" wx:if="{{status === 3}}">
+          <view class="record-btn-group" bindtap="openRecording">
+            <image class="record-start" src="./../../images/home/buttons/start_record.png"></image>
+            <view class="txt">点击录制语音</view>
+          </view>
+        </view>
+        <view class="record-box" wx:if="{{status === 4}}">
+          <view class="animate-box">
+            <view class="animation left" bindtap="click">
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+            </view>
+            <view class="animation reverse right" bindtap="click">
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+              <view class="animationName"></view>
+            </view>
+          </view>
+
+          <view class="record-btn-group" bindtap="shutRecording">
+            <image class="record-start" src="./../../images/home/buttons/recording.png"></image>
+            <view class="txt">再次点击停止录音</view>
+
+          </view>
+
+        </view>
+        <view class="record-box" wx:if="{{status === 5}}">
+          <view class="record-btn-group flex">
+            <view class="cell" bindtap="recordingAndPlaying">
+              <image class="record-start" src="./../../images/home/buttons/try_listen.png"></image>
+              <view class="txt">试听</view>
+            </view>
+            <view class="cell" bindtap="handleSetStep" data-step="3">
+              <image class="record-start" src="./../../images/home/buttons/re_record.png"></image>
+              <view class="txt">重录</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="btn-group" wx-if="{{status === 3 || status === 4}}">
+        <view class="btn2 btn-prev" bindtap="handlePrev">
+          <image src="./../../images/home/buttons/prev.png"></image>
+        </view>
+      </view>
+      <view class="btn-group" wx-if="{{status === 5}}">
+        <view class="btn2 btn-prev btn5" bindtap="handleSubmit">
+          <image src="./../../images/home/buttons/submit.png"></image>
+        </view>
+      </view>
+    </view>
+
+    <!-- status: 7 -->
+    <view class="sts7" wx:if="{{status === 7}}">
+      <view class="radio-bar" bindtap="recordingAndPlaying" wx:if="{{CurrentDate >= Door}}">
+        <image src="./../../images/home/complete.png"></image>
+      </view>
+      <view class="btn-group">
+        <view class="btn7 btn-prev" bindtap="handleSetStep" data-step="1">
+          <image src="./../../images/home/buttons/re_create.png"></image>
+        </view>
+        <view class="btn7 btn-next">
+          <button class='weixin' open-type="share">
+          </button>
+          <image src="./../../images/home/buttons/bless.png"></image>
+        </view>
+        <view class="btn7 btn-next" bindtap="toPageLuckyWheel">
+          <image src="./../../images/home/buttons/lucky_wheel.png"></image>
+        </view>
+      </view>
+    </view>
+
+    <!-- status: 8 -->
+    <view class="sts8" wx:if="{{status === 8}}">
+      <view class="radio-bar" bindtap="listenToShareRecord"  wx:if="{{CurrentDate >= Door}}">
+        <image src="./../../images/home/complete.png"></image>
+      </view>
+      <view class="btn-group">
+        <view class="btn8 btn-prev" bindtap="handleSetStep" data-step="1">
+          <image src="./../../images/home/buttons/iwant.png"></image>
+        </view>
+      </view>
+
+    </view>
+  </view>
+
+  <!-- footer -->
+  <view class="copyright" wx:if="{{status === 1}}">
+    最终解释权归Applaws所有
+  </view>
+
+  <!-- modal activity活动介绍 -->
+  <view class="modal modal-activity" wx:if="{{modalStatusMap.activity}}">
+    <view class="modal-trans">
+      <view class="close" bindtap="handleCheckActivityModal">
+        <image src="./../../images/home/buttons/close.png"></image>
+      </view>
+      <view class="content">
+        <image src="cloud://test-6gbljcgx7c5a85df.7465-test-6gbljcgx7c5a85df-1304542776/static-imgs/modal-activity.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class="modal modal-share" wx:if="{{modalStatusMap.share}}">
+    <view class="modal-trans">
+      <view class="share-logo">
+        <image src="./../../images/home/share.png"></image>
+      </view>
+    </view>
+  </view>
+</view>
