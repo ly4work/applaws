@@ -1,8 +1,5 @@
 {
-  "pages": [
-    "pages/home/index",
-    "pages/luckywheel/index"
-  ],
+  "pages": ["pages/home/index", "pages/luckywheel/index"],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
