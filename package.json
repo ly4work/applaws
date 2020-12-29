@@ -1,0 +1,13 @@
+{
+  "name": "applawsplus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ly4work/applaws.git",
+  "author": "liyang <ly4work@163.com>",
+  "license": "MIT",
+  "dependencies": {
+    "excel-export": "^0.5.1",
+    "exceljs": "^4.2.0",
+    "node-xlsx": "^0.15.0"
+  }
+}
