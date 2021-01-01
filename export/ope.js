@@ -1,55 +1,9 @@
 var xls = require("exceljs");
 const data = require("./database_export-gift_20201228a.json");
-const path = require('path')
-var data1 =  [
-    {
-        name : "张三",
-        age  : 19,
-        description : "一只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "2只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "3只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "4只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "5只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "6只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "一只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "一只张三"
-    },
-    {
-        name : "张三",
-        age  : 19,
-        description : "一只张三"
-    }
-]
- 
- 
+const path = require('path');
+
+
+
 function operation() {
     // 新建一个工作表
     var workbook = new xls.Workbook();
